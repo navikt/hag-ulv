@@ -6,7 +6,7 @@ Serveren bruker din eksisterende `kubectl` config for å hente maskinporten toke
 
 Husk at du må være logget inn med  `gcloud auth login`.
 
-## Start token server
+## Getting started
 
 ```
 ./release/bin/start
@@ -16,10 +16,8 @@ Eller
 gradle run
 ```
 
-## Eksempler
 
-### **Curl:**  
-Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`  
+Test ved å lese en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
 ```
 curl -X 'GET' \
 'https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518' \
@@ -27,6 +25,9 @@ curl -X 'GET' \
 -H "Authorization: Bearer $(curl -sX GET http://localhost:4242/token/sykepenger-im-lps-api)" \
 | jq
 ```
+
+## Kataloger
+
 ### **Bruno:**
 ```
 brew install bruno && open /Applications/Bruno.app
@@ -40,7 +41,7 @@ brew install postman && open /Applications/Postman.app
 Mac menu bar: `File` > `Import Collection` > `hag-api-testing-katalog/kataloger/postman.json`
 
 
-## Endpoints
+## Endepunkter
 
 
 ```
@@ -67,7 +68,7 @@ Disse JWK secrets brukes for å hente nye maskinporten tokens for hver request f
 ## Obs!
 
 - Om du prøver en å hente token for en ny tjeneste som ikke er "cached" fra tidligere så kan du være utlogget på GCloud.
-- JWK secrets kan blu utdaterte! Da må serveren startes på nytt for å få "cache" nye JWK verdier.
+- JWK secrets kan i sjeldne tilfeller bli utdaterte! Da må serveren startes på nytt.
 
 
 ## Ekstra
