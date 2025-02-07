@@ -2,16 +2,20 @@
 
 En maskinporten token server og katalog av HTTP requests for internt bruk.
 
-Start serveren:
+### Start serveren:
+Husk at du må være logget inn med  `gcloud auth login`
 ```
-gcloud auth login
-
-git clone https://github.com/navikt/hag-api-testing-katalog.git
-
-hag-api-testing-katalog/release/bin/start
+./release/bin/start
+```
+Eller
+```
+gradle run
 ```
 
-Test å hente en dialog fra Dialogporten:
+### Eksempel bruk
+
+**Curl:**  
+
 ```
 curl -X 'GET' \
 'https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518' \
@@ -19,8 +23,7 @@ curl -X 'GET' \
 -H "Authorization: Bearer $(curl -sX GET http://localhost:4242/token/sykepenger-im-lps-api)" \
 | jq
 ```
-
-Test HTTP requests i Bruno/Postman alternativ:
+**Bruno:**
 ```
 brew install bruno
 ```
