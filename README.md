@@ -1,9 +1,13 @@
 # HAG API testing katalog
 
-En maskinporten token server og katalog av HTTP requests for internt bruk.
+En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.
 
-### Start serveren:
-Husk at du må være logget inn med  `gcloud auth login`
+Serveren bruker din eksisterende `kubectl` config for å hente maskinporten tokens.
+
+Husk at du må være logget inn med  `gcloud auth login`.
+
+## Start token server
+
 ```
 ./release/bin/start
 ```
@@ -12,10 +16,10 @@ Eller
 gradle run
 ```
 
-### Eksempel bruk
+## Eksempler
 
-**Curl:**  
-
+### **Curl:**  
+Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`  
 ```
 curl -X 'GET' \
 'https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518' \
@@ -23,19 +27,22 @@ curl -X 'GET' \
 -H "Authorization: Bearer $(curl -sX GET http://localhost:4242/token/sykepenger-im-lps-api)" \
 | jq
 ```
-**Bruno:**
+### **Bruno:**
 ```
-brew install bruno
+brew install bruno && open /Applications/Bruno.app
 ```
-Etter du har åpnet opp bruno trykk på de tre dottene og "import collection", velg deretter `im-lps-api.json` som ligger lokalt i prosjektet.
+Mac menu bar: `Bruno` > `Open Collection` > `hag-api-testing-katalog/kataloger/dialogporten`
 
-![](bruno-example.png)
+### **Postman:**
+```
+brew install postman && open /Applications/Postman.app
+```
+Mac menu bar: `File` > `Import Collection` > `hag-api-testing-katalog/kataloger/postman.json`
 
 
-## Getting started med token server
-Husk å logge inn på gcloud før du kjører serveren.
+## Endpoints
 
-### Eksempel bruk:
+
 ```
 HTTP GET: 
 http://localhost:4242/token/sykepenger-im-lps-api
@@ -61,3 +68,24 @@ Disse JWK secrets brukes for å hente nye maskinporten tokens for hver request f
 
 - Om du prøver en å hente token for en ny tjeneste som ikke er "cached" fra tidligere så kan du være utlogget på GCloud.
 - JWK secrets kan blu utdaterte! Da må serveren startes på nytt for å få "cache" nye JWK verdier.
+
+
+## Ekstra
+
+Et [påskeegg](https://www.nrk.no/filmpolitiet/et-annerledes-paskeegg-1.17237361) er at port 4242 som serveren bruker er *hag* skrevet på [T9 tastatur](https://no.wikipedia.org/wiki/T9):
+
+```
+ _______________________
+| 1     | 2 abc | 3 def |
+| -     |       |       |
+|_______|_______|_______|
+| 4 ghi | 5 jkl | 6 mno |
+|       |       |       |
+|_______|_______|_______|
+| 7 pqrs| 8 tuv | 9 wxyz|
+|       |       |       |
+|_______|_______|_______|
+|   *   |   0   |   #   |
+|       |       |       |
+|_______|_______|_______|
+```

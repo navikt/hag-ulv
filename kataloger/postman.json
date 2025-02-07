@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "bdbf85b3-b863-4b2b-872c-8dc1e5d43f6d",
+		"name": "dialogporten",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41936235"
+	},
+	"item": [
+		{
+			"name": "dialog ID",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518",
+					"protocol": "https",
+					"host": [
+						"platform",
+						"tt02",
+						"altinn",
+						"no"
+					],
+					"path": [
+						"dialogporten",
+						"api",
+						"v1",
+						"serviceowner",
+						"dialogs",
+						"0194bc95-97b4-7240-961f-9663743d4518"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dialog",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"bru.setVar('uuid', require(\"uuid\").v4());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"serviceResource\": \"urn:altinn:resource:nav_sykepenger_inntektsmelding-nedlasting\",\n  \"party\": \"urn:altinn:organization:identifier-no:315587336\",\n  \"externalReference\": \"{{$guid}}\",\n  \"createdAt\": \"2025-01-28T13:00:00Z\",\n  \"updatedAt\": \"2025-01-28T13:00:00Z\",\n  \"status\": \"New\",\n  \"content\": {\n    \"title\": {\n      \"value\": [\n        {\n          \"value\": \"Testdialog\",\n          \"languageCode\": \"nb\"\n        }\n      ],\n      \"mediaType\": \"text/plain\"\n    },\n    \"summary\": {\n      \"value\": [\n        {\n          \"value\": \"Dette er en test dialog fra HAG\",\n          \"languageCode\": \"nb\"\n        }\n      ],\n      \"mediaType\": \"text/plain\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs",
+					"protocol": "https",
+					"host": [
+						"platform",
+						"tt02",
+						"altinn",
+						"no"
+					],
+					"path": [
+						"dialogporten",
+						"api",
+						"v1",
+						"serviceowner",
+						"dialogs"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.sendRequest('http://localhost:4242/token/sykepenger-im-lps-api', function (err, res) {",
+					"    if (err) {",
+					"        console.log(err);",
+					"    } else {",
+					"        pm.request.headers.add({",
+					"            key: \"Authorization\",",
+					"            value: \"Bearer \" + res.text()",
+					"        });",
+					"    }",
+					"});",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "uuid",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

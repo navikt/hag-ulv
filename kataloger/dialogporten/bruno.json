@@ -1,0 +1,19 @@
+{
+  "version": "1",
+  "name": "dialogporten",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "scripts": {
+    "moduleWhitelist": [
+      "child_process",
+      "util",
+      "path"
+    ],
+    "filesystemAccess": {
+      "allow": true
+    }
+  }
+}

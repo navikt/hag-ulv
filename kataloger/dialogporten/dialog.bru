@@ -1,0 +1,51 @@
+meta {
+  name: dialog
+  type: http
+  seq: 5
+}
+
+post {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs
+  body: json
+  auth: none
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "serviceResource": "urn:altinn:resource:nav_sykepenger_inntektsmelding-nedlasting",
+    "party": "urn:altinn:organization:identifier-no:315587336",
+    "externalReference": "{{uuid}}",
+    "createdAt": "2025-01-28T13:00:00Z",
+    "updatedAt": "2025-01-28T13:00:00Z",
+    "status": "New",
+    "content": {
+      "title": {
+        "value": [
+          {
+            "value": "Testdialog",
+            "languageCode": "nb"
+          }
+        ],
+        "mediaType": "text/plain"
+      },
+      "summary": {
+        "value": [
+          {
+            "value": "Dette er en test dialog fra HAG",
+            "languageCode": "nb"
+          }
+        ],
+        "mediaType": "text/plain"
+      }
+    }
+  }
+}
+
+script:pre-request {
+  bru.setVar('uuid', require("uuid").v4());
+}
