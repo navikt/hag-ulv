@@ -1,0 +1,126 @@
+{
+  "name": "im-lps-api",
+  "version": "1",
+  "items": [
+    {
+      "type": "js",
+      "name": "getMaskinportenToken",
+      "seq": 1,
+      "fileContent": "const { exec } = require('child_process');\nconst { promisify } = require('util');\nconst path = require('path');\nconst execAsync = promisify(exec);\n\n\nasync function getMaskinportenToken(serviceName) {\n\n    const directJarPath = '../maskinporten-token-jar/build/libs/hag-api-testing-katalog-1.0-SNAPSHOT.jar'\n    // const serviceName = \"maskinporten-hag-lps-api-client-\"\n\n    try {\n\n        const command = process.platform === 'win32' ? 'where java' : 'which java';\n        const { stdout: javaPath } = await execAsync(command);\n        const cleanJavaPath = javaPath.trim();\n\n        console.log('PATH:', process.env.PATH);\n        console.log('JAVA_HOME:', process.env.JAVA_HOME);\n\n        const scriptDir = __dirname;\n\n        const jarPath = path.join(scriptDir, directJarPath);\n\n        const { stdout, stderr } = await execAsync(`\"${cleanJavaPath}\" -jar \"${jarPath}\" \"${serviceName}\"`, {\n            cwd: scriptDir\n        });\n\n        if (stderr) console.error('Errors:', stderr);\n\n        return stdout\n    } catch (error) {\n        console.error('Error:', error);\n    }\n}\n\n\ngetMaskinportenToken(\"maskinporten-hag-lps-api-client-\").then((result) => {console.log(result)});"
+    },
+    {
+      "type": "js",
+      "name": "test",
+      "seq": 1,
+      "fileContent": "const getMaskinportenToken = require(\"../old-getMaskinportenToken.js\");\n\nconsole.error(\"From the outside!\");\n\ngetMaskinportenToken(\"maskinporten-hag-lps-api-client-\").then((result) => {console.log(result)});"
+    },
+    {
+      "type": "http",
+      "name": "dialog ID",
+      "seq": 5,
+      "request": {
+        "url": "https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518",
+        "method": "GET",
+        "headers": [
+          {
+            "name": "accept",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "dialog",
+      "seq": 5,
+      "request": {
+        "url": "https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "accept",
+            "value": "application/json",
+            "enabled": true
+          },
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"serviceResource\": \"urn:altinn:resource:nav_sykepenger_inntektsmelding-nedlasting\",\n  \"party\": \"urn:altinn:organization:identifier-no:315587336\",\n  \"externalReference\": \"{{uuid}}\",\n  \"createdAt\": \"2025-01-28T13:00:00Z\",\n  \"updatedAt\": \"2025-01-28T13:00:00Z\",\n  \"status\": \"New\",\n  \"content\": {\n    \"title\": {\n      \"value\": [\n        {\n          \"value\": \"Testdialog\",\n          \"languageCode\": \"nb\"\n        }\n      ],\n      \"mediaType\": \"text/plain\"\n    },\n    \"summary\": {\n      \"value\": [\n        {\n          \"value\": \"Dette er en test dialog fra HAG\",\n          \"languageCode\": \"nb\"\n        }\n      ],\n      \"mediaType\": \"text/plain\"\n    }\n  }\n}",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {
+          "req": "bru.setVar('uuid', require(\"uuid\").v4());"
+        },
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    }
+  ],
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "a",
+          "value": "b",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "env_1"
+    }
+  ],
+  "root": {
+    "request": {
+      "script": {
+        "req": "const http = require('axios');\nlet service = \"sykepenger-im-lps-api\"\nlet response = await http.get('http://localhost:4242/token/' + service)\nreq.setHeader('Authorization', \"Bearer \"+ response.data);"
+      }
+    }
+  },
+  "brunoConfig": {
+    "version": "1",
+    "name": "im-lps-api",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "scripts": {
+      "moduleWhitelist": [
+        "child_process",
+        "util",
+        "path"
+      ],
+      "filesystemAccess": {
+        "allow": true
+      }
+    }
+  }
+}

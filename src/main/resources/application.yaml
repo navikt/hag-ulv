@@ -1,0 +1,7 @@
+ktor:
+  application:
+    modules:
+      - no.nav.helsearbeidsgiver.ApplicationKt.module
+  deployment:
+    port: 4242
+    host: "localhost"
