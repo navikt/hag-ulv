@@ -63,6 +63,7 @@ private fun printStartupMelding(status: KubeCtlStatus) {
     val blue = "\u001B[34m"
     val green = "\u001B[32m"
     val cyan = "\u001B[36m"
+    val red = "\u001B[31m"
     val line = "-".repeat(60)
 
     fun centerText(
@@ -79,13 +80,28 @@ private fun printStartupMelding(status: KubeCtlStatus) {
     result += green + bold + "Swagger:" + reset + "\n"
     result += "  http://localhost:4242/swagger" + "\n"
 
-    val a = """
+    val successTekst = """
 ${green}${bold}Hent token:$reset    
   http://localhost:4242/token/maskinporten-hag-lps-api-client
       
 ${green}${bold}Swagger:$reset
   http://localhost:4242/swagger
     """
+
+    val feilTekst = """
+${red}${bold}Feil ved oppstart:$reset    
+  
+      
+${green}${bold}Swagger:$reset
+  http://localhost:4242/swagger
+    """
+
+    fun KubeCtlStatus.feilTekst(): String =
+        when {
+            this == KubeCtlStatus.UNAUTHORIZED -> "Ikke autorisert - Logg på med: ${bold}${green}gcloud auth login$reset"
+            this == KubeCtlStatus.TIMEOUT -> "Timeout mot kubectl - Er du pålogget med ${bold}${green}NAIS$reset?"
+            else -> "Ukjent feil - Se på logs for flere detaljer"
+        }
 
     println(blue + line + reset)
     println(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
