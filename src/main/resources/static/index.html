@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swagger UI with External JSON</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        #header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .input-field {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .input-description {
+            margin-top: 6px;
+            width: 12rem;
+        }
+        #swagger-ui {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header" style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; gap: 10px;">
+            <label for="swaggerUrl" class="input-description"><b>Swagger JSON URL</b></label>
+            <input type="text" id="swaggerUrl" class="input-field" placeholder="Swagger JSON URL">
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <label for="authName" class="input-description"><b>Tjeneste for autoritet</b></label>
+            <input type="text" id="authName" class="input-field" placeholder="Auth Name">
+        </div>
+    </div>
+    
+    <div id="swagger-ui"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-standalone-preset.js"></script>
+    <script>
+        let ui;
+        const swaggerUrlInput = document.getElementById('swaggerUrl');
+        const authNameInput = document.getElementById('authName');
+        const defaultSwaggerUrl = 'https://platform.tt02.altinn.no/dialogporten/swagger/v1/swagger.json';
+        const defaultAuthName = 'sykepenger-im-lps-api';
+
+        // Initialize with default values
+        swaggerUrlInput.value = defaultSwaggerUrl;
+        authNameInput.value = defaultAuthName;
+
+        function printNyFeil(melding){
+            const errorMessage = melding;
+            alert(errorMessage);
+            console.error(errorMessage);
+        }
+
+        async function fetchSwaggerJson(url) {
+            try {
+                const response = await fetch('http://localhost:4242/proxy/' + url);
+                if (!response.ok) {
+                    throw new Error(`${response.status} ${response.statusText} ${await response.text()}`);
+                }
+                return await response.text();
+            } catch (error) {
+                printNyFeil(`Swagger JSON: ${error.message}`)
+                return null;
+            }
+        }
+
+        async function fetchAuthToken() {
+            try {
+                const authName = authNameInput.value
+                console.log("FETCHING TOKENS: ", authName)
+                const response = await fetch(`http://localhost:4242/token/${authName}`);
+                if (!response.ok) {
+                    throw new Error(`${response.status} ${response.statusText} ${await response.text()}`);
+                }
+                return await response.text();
+            } catch (error) {
+                printNyFeil(`Autentisering token server: ${error.message}`)
+                return null;
+            }
+        }
+
+        async function initSwaggerUI(spec) {
+            if (ui) {
+                ui = null;
+            }
+
+            try {
+
+            
+
+            ui = SwaggerUIBundle({
+                spec: JSON.parse(spec),
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+
+                // Beholder samme ordre 
+                docExpansion: "none", 
+                operationsSorter: "alpha", 
+                defaultModelsExpandDepth: -1, 
+                defaultModelExpandDepth: 1, 
+                tagsSorter: "alpha", 
+                filter: true, 
+                persistAuthorization: true, 
+                displayRequestDuration: true, 
+                tryItOutEnabled: true, 
+                // layout: "StandaloneLayout",
+
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                requestInterceptor: async (request) => {
+
+                    const newUrl = `http://localhost:4242/proxy/` + request.url;
+                    console.log("new url", newUrl)
+                    request.url = newUrl;
+
+                    var authToken = await fetchAuthToken(authNameInput.value);
+                    // var authToken = "eyJraWQiOiJiZFhMRVduRGpMSGpwRThPZnl5TUp4UlJLbVo3MUxCOHUxeUREbVBpdVQwIiwiYWxnIjoiUlMyNTYifQ.eyJzY29wZSI6ImFsdGlubjphdXRob3JpemF0aW9uL2F1dGhvcml6ZSBkaWdkaXI6ZGlhbG9ncG9ydGVuLnNlcnZpY2Vwcm92aWRlciIsImlzcyI6Imh0dHBzOi8vdGVzdC5tYXNraW5wb3J0ZW4ubm8vIiwiY2xpZW50X2FtciI6InByaXZhdGVfa2V5X2p3dCIsInRva2VuX3R5cGUiOiJCZWFyZXIiLCJleHAiOjE3MzkyNjkxNjUsImlhdCI6MTczOTI2NTU2NSwiY2xpZW50X2lkIjoiODE4OGI4N2EtNDQxYi00MjUxLTk0NzQtYWYyMDIwYjU5ZDRiIiwianRpIjoidzViVDFtSkxoSENvYklkNjhPZEhCbjh3OENaUHl5TzZnTTFyeE9sM0JiNCIsImNvbnN1bWVyIjp7ImF1dGhvcml0eSI6ImlzbzY1MjMtYWN0b3JpZC11cGlzIiwiSUQiOiIwMTkyOjg4OTY0MDc4MiJ9fQ.tI5mtuna10Wui9UrT8qaEepa6Sr7UC9pIrbhh0QCK0tEBE-BLqHW6QHf-iwTMXynSZPCqR7r7F4Qn74vmbCrxUC2tkQBprtb0Bs2KrDcjOMmvpgJZ0RsDux953eK6EY5qmhhzSViuM8iI5mygh8_TuCdQa-C9__dwSa6fVEKrygnFPbUvZw-4I6vj17Kd-ltJXxqtGE1yq5O_cZOVvfAVoUgGNvJPySgXzbrFlVwss09uwWnr7C6yf0o9GpTbqMI0pnwTIFPmCpFVoDf1sL6FxDYOLsJKAxvgWdTZV9OnZVi2QOgQnG8J5sxoygARLfWAPm2PqOinD_V0rF8jIzQ2HkkMl541mGcXnAIhXLyGVZM89eXBtrEn01fpXfdIKFazg1pLZEXEmuMGgDA6OwLVT-xv6cnDdwe6hO7ClkWj_Y_ZgWIJYm4w2iaKpWJE8evnnYAiZw8hJdsPOFzIR8HhP1Nwnk-5Ryj1dcHgQCQO3jUDMSZSBbnwI2jqrwe3ltZ"
+                    
+                    if (authToken) {
+                        // const 
+                        request.headers['Authorization'] = "Bearer " + authToken;
+                        // `Bearer ${authToken}`
+                        
+                    }
+                    return request;
+                }
+            });
+        } catch (error){
+            alert(error)
+            console.error(error)
+        }
+        }
+
+        // Handle URL input changes
+        let urlTimeout;
+        swaggerUrlInput.addEventListener('input', async (e) => {
+            clearTimeout(urlTimeout);
+            urlTimeout = setTimeout(async () => {
+                const swaggerJson = await fetchSwaggerJson(e.target.value);
+                if (swaggerJson) {
+                    initSwaggerUI(swaggerJson);
+                }
+            }, 500);
+        });
+
+        // Handle auth name input changes
+        let authTimeout;
+        authNameInput.addEventListener('input', (e) => {
+            clearTimeout(authTimeout);
+            authTimeout = setTimeout(async () => {
+                const swaggerJson = await fetchSwaggerJson(swaggerUrlInput.value);
+                if (swaggerJson) {
+                    initSwaggerUI(swaggerJson);
+                }
+            }, 500);
+        });
+
+        // Initial load
+        (async () => {
+            const swaggerJson = await fetchSwaggerJson(defaultSwaggerUrl);
+            if (swaggerJson) {
+                initSwaggerUI(swaggerJson);
+            }
+        })();
+    </script>
+
+
+
+<script>
+    function cleanProxyUrls(rootNode = document.body) {
+    // Create a TreeWalker to find all text nodes
+    const walker = document.createTreeWalker(
+        rootNode,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+
+    // Pattern to match proxy URLs
+    const proxyPattern = /http:\/\/localhost:4242\/proxy\//g;
+
+    // Track text nodes that need updating
+    let node;
+    const nodesToUpdate = [];
+
+    // Find all text nodes containing the proxy URL
+    while (node = walker.nextNode()) {
+        if (node.textContent.includes('http://localhost:4242/proxy/')) {
+            nodesToUpdate.push(node);
+        }
+    }
+
+    // Update each text node
+    nodesToUpdate.forEach(node => {
+        node.textContent = node.textContent.replace(proxyPattern, '');
+    });
+}
+
+// Create a MutationObserver to watch for DOM changes
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+        // Handle added nodes
+        mutation.addedNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                cleanProxyUrls(node);
+            }
+        });
+
+        // Handle text changes
+        if (mutation.type === 'characterData') {
+            cleanProxyUrls(mutation.target.parentNode);
+        }
+    });
+});
+
+// Configure the observer to watch for everything
+const observerConfig = {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true
+};
+
+// Start observing when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Clean existing content
+    cleanProxyUrls();
+    
+    // Start watching for changes
+    observer.observe(document.body, observerConfig);
+});
+</script>
+</body>
+</html>

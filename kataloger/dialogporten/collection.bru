@@ -1,6 +1,7 @@
 script:pre-request {
-  const http = require('axios');
-  let service = "sykepenger-im-lps-api"
-  let response = await http.get('http://localhost:4242/token/' + service)
-  req.setHeader('Authorization', "Bearer "+ response.data);
+   const http = require('axios');
+    let service = "sykepenger-im-lps-api"
+    let response = await http.get('http://localhost:4242/token/' + service)
+    console.log(response.data)
+    req.setHeader('Authorization', "Bearer "+ response.data);
 }

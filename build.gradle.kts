@@ -1,6 +1,6 @@
 val kotlin_version: String by project
 val logback_version: String by project
-// val ktor_version: String by project
+val ktor_version: String by project
 
 plugins {
     application
@@ -50,4 +50,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
     implementation("io.kubernetes:client-java:18.0.1")
+
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("io.ktor:ktor-client-apache5:$ktor_version")
 }
