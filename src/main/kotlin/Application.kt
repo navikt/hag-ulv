@@ -20,29 +20,6 @@ fun main(args: Array<String>) {
 fun Application.module() {
     configureRouting()
 
-//    install(CORS) {
-//        allowMethod(HttpMethod.Options)
-//        allowMethod(HttpMethod.Get)
-//        allowMethod(HttpMethod.Post)
-//        allowMethod(HttpMethod.Put)
-//        allowMethod(HttpMethod.Delete)
-//
-//        allowHeader(HttpHeaders.Authorization)
-//        allowHeader(HttpHeaders.ContentType)
-//        allowHeader(HttpHeaders.AccessControlAllowOrigin)
-//
-//        allowCredentials = true
-
-    // Specifically allow your exact origin and target domain
-//        host("localhost:4242")
-//        host("platform.tt02.altinn.no")
-
-    // More specific origin handling
-//        allowOrigins {
-//            it == "http://localhost:4242" ||
-//                it.endsWith(".altinn.no")
-//        }
-
     environment.monitor.subscribe(ApplicationStarted) {
         val kubeCtlClient = KubeCtlClient()
         val status = kubeCtlClient.getStatus()
@@ -74,28 +51,6 @@ private fun printStartupMelding(status: KubeCtlStatus) {
         return " ".repeat(padding) + text + " ".repeat(padding)
     }
 
-    var result = green + bold + "Hent token:" + reset + "\n"
-    result += "  http://localhost:4242/token/maskinporten-hag-lps-api-client" + "\n"
-    result += "\n"
-    result += green + bold + "Swagger:" + reset + "\n"
-    result += "  http://localhost:4242/swagger" + "\n"
-
-    val successTekst = """
-${green}${bold}Hent token:$reset    
-  http://localhost:4242/token/maskinporten-hag-lps-api-client
-      
-${green}${bold}Swagger:$reset
-  http://localhost:4242/swagger
-    """
-
-    val feilTekst = """
-${red}${bold}Feil ved oppstart:$reset    
-  
-      
-${green}${bold}Swagger:$reset
-  http://localhost:4242/swagger
-    """
-
     fun KubeCtlStatus.feilTekst(): String =
         when {
             this == KubeCtlStatus.UNAUTHORIZED -> "Ikke autorisert - Logg på med: ${bold}${green}gcloud auth login$reset"
@@ -103,20 +58,34 @@ ${green}${bold}Swagger:$reset
             else -> "Ukjent feil - Se på logs for flere detaljer"
         }
 
+    val feilTekst = """
+$red🛑 Serveren ble ikke startet$reset    
+
+${red}${bold}Feil ved oppstart:$reset    
+   ${status.feilTekst()}
+    """
+
+    val successTekst = """
+${green}Server online$reset    
+        
+${green}${bold}Hent token:$reset    
+  http://localhost:4242/token/maskinporten-hag-lps-api-client
+      
+${green}${bold}Swagger:$reset
+  http://localhost:4242/swagger
+    """
+
+    var result = green + bold + "Hent token:" + reset + "\n"
+    result += "  http://localhost:4242/token/maskinporten-hag-lps-api-client" + "\n"
+    result += "\n"
+    result += green + bold + "Swagger:" + reset + "\n"
+    result += "  http://localhost:4242/swagger" + "\n"
+
+    println("\n".repeat(2))
     println(blue + line + reset)
     println(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
 
-    println(a)
+    println(if (status == KubeCtlStatus.SUCCESS) successTekst else feilTekst)
 
     println(blue + line + reset)
-    println(status.name)
 }
-
-// fun KubeCtlStatus.tilInfoString(): String {
-//    return when {
-//        this == KubeCtlStatus.SUCCESS -> {
-//            var result = ""
-//        }
-//        else -> ""
-//    }
-// }

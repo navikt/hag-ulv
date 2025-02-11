@@ -78,8 +78,7 @@ class KubeCtlClient {
             val kubeCtlClient = KubeCtlClient()
             kubeCtlClient.getMaskinportenServiceNames()
         } catch (e: Exception) {
-            if (e is ApiException) {
-//                println("Feil med kubectl: ${e.responseBody}")
+            if (e is ApiException && e.responseBody.isNotEmpty()) {
                 println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
             }
             return when {
@@ -98,6 +97,3 @@ enum class KubeCtlStatus {
     SUCCESS,
     UNKNOWN,
 }
-
-// println("Connection timed out: ${e.message}")
-// println("Du er ikke koblet til NAIS")

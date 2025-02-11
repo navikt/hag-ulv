@@ -6,6 +6,7 @@ Serveren bruker din eksisterende `kubectl` config for å hente maskinporten toke
 
 Husk at du må være logget inn med  `gcloud auth login`.
 
+
 ## Getting started
 
 ```
@@ -27,6 +28,8 @@ curl -X 'GET' \
 ```
 
 ## Kataloger
+
+Disse HTTP katalogene henter automatisk nye tokens for requests
 
 ### **Bruno:**
 ```
