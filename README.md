@@ -3,7 +3,8 @@ _________
 # Token server + HTTP kataloger
 
 En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.   
-Bruker din lokal `kubectl` instans, husk derfor å være pålogget med  `gcloud auth login`.
+Bruker din lokal `kubectl` instans, husk derfor å være pålogget med  `gcloud auth login`.  
+Designet for testing i dev miljø og bruker automatisk dev-gcp context.
 
 
 ![](readme/token-server-diagram.png)
