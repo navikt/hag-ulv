@@ -1,12 +1,12 @@
 ### HAG - Helse Arbeidsgiver
 _________
-# Token server + kataloger
+# Token server + HTTP kataloger
 
 En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.   
 Bruker din lokal `kubectl` instans, husk derfor å være pålogget med  `gcloud auth login`.
 
 
-![](token-server-diagram.png)
+![](readme/token-server-diagram.png)
 
 ## Komme i gang
 ### Start severen
@@ -28,7 +28,9 @@ curl -X 'GET' \
 
 ## Autentisert HTTP Kataloger
 
-Disse HTTP katalogene henter automatisk nye tokens for requests ved bruk av pre-request scripts
+Disse HTTP katalogene henter automatisk nye tokens for requests ved bruk av pre-request scripts [(bruno eksempel)](./readme/bruno-prescript-eksempel.png).
+
+
 
 ### **Bruno:**
 ```
@@ -52,11 +54,11 @@ Tokens blir automatisk lagt til i header `Authorization: Bearer [token]` på all
 
 Lenke: **http://localhost:4242/swagger**
 
-[![](swagger-eksempel.png)](http://localhost:4242/swagger)
+[![](readme/swagger-eksempel.png)](http://localhost:4242/swagger)
 
 ## Endepunkter
 
-Du kan finne koden i [./src/main/kotlin/Routing.kt](./src/main/kotlin/Routing.kt)
+Koden for endepunktene ligger i [./src/main/kotlin/Routing.kt](./src/main/kotlin/Routing.kt)
 
 ## Hvordan fungerer serveren?
 
