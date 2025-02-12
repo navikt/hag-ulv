@@ -1,24 +1,23 @@
-# HAG API testing katalog
+### HAG - Helse Arbeidsgiver
+_________
+# Token server + kataloger
 
-En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.
-
-Serveren bruker din eksisterende `kubectl` config for å hente maskinporten tokens.
-
-Husk at du må være logget inn med  `gcloud auth login`.
-
-
-## Getting started
-
-```
-./release/bin/start
-```
-Eller
-```
-gradle run
-```
+En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.   
+Bruker din lokal `kubectl` instans, husk derfor å være pålogget med  `gcloud auth login`.
 
 
-Test ved å lese en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
+![](token-server-diagram.png)
+
+## Komme i gang
+### Start severen
+
+`./release/bin/start` eller `gradle run`
+
+### Hent en token
+http://localhost:4242/token/sykepenger-im-lps-api  
+
+## Autentisert CURL
+Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
 ```
 curl -X 'GET' \
 'https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518' \
@@ -27,9 +26,9 @@ curl -X 'GET' \
 | jq
 ```
 
-## Kataloger
+## Autentisert HTTP Kataloger
 
-Disse HTTP katalogene henter automatisk nye tokens for requests
+Disse HTTP katalogene henter automatisk nye tokens for requests ved bruk av pre-request scripts
 
 ### **Bruno:**
 ```
@@ -43,21 +42,25 @@ brew install postman && open /Applications/Postman.app
 ```
 Mac menu bar: `File` > `Import Collection` > `hag-api-testing-katalog/kataloger/postman.json`
 
+## Autentisert Swagger
+
+Øverst på siden settes lenke til swagger.json url og hvilken intern tjeneste tokens hentes fra.
+
+
+Tokens blir automatisk lagt til i header `Authorization: Bearer [token]` på alle HTTP kall på siden.
+
+
+Lenke: **http://localhost:4242/swagger**
+
+[![](swagger-eksempel.png)](http://localhost:4242/swagger)
 
 ## Endepunkter
 
-
-```
-HTTP GET: 
-http://localhost:4242/token/sykepenger-im-lps-api
-
-Response: 
-eyJraOiwKvLNpXieJdPncEitGjVFokDmal... (maskinporten token)
-```
+Du kan finne koden i [./src/main/kotlin/Routing.kt](./src/main/kotlin/Routing.kt)
 
 ## Hvordan fungerer serveren?
 
-Serveren bruker lokalt konfigurert kubectl config i dev-gcp miljøet.
+Serveren bruker lokalt konfigurert kubectl config .
 
 **Route: `http://localhost:4242/token/{tjeneste-navn}`**
 
@@ -76,7 +79,7 @@ Disse JWK secrets brukes for å hente nye maskinporten tokens for hver request f
 
 ## Ekstra
 
-Et [påskeegg](https://www.nrk.no/filmpolitiet/et-annerledes-paskeegg-1.17237361) er at port 4242 som serveren bruker er *hag* skrevet på [T9 tastatur](https://no.wikipedia.org/wiki/T9):
+Et [påskeegg](https://www.nrk.no/filmpolitiet/et-annerledes-paskeegg-1.17237361) er at port 4242 som serveren bruker er *hag* delvis skrevet på [T9 tastatur](https://no.wikipedia.org/wiki/T9):
 
 ```
  _______________________

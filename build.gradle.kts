@@ -57,3 +57,18 @@ dependencies {
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-client-apache5:$ktor_version")
 }
+
+tasks.register("start") {
+    group = "application"
+    description = "Runs the start script"
+
+    doFirst {
+        file("./release/bin/start").setExecutable(true)
+    }
+
+    doLast {
+        exec {
+            commandLine("./release/bin/start")
+        }
+    }
+}

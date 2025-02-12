@@ -26,11 +26,22 @@ private fun Map<String, ByteArray>.parseKubeCtlVerdi(nøkkel: String): String =
     this[nøkkel]?.decodeToString()
         ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: $nøkkel\nFor kubectl json response: $this")
 
-class KubeCtlClient {
-    private val apiClient: ApiClient = Config.defaultClient()
+// object KubeCtlClientInstance {
+//    var kubeCtlClient: KubeCtlClient? = null
+//        get() = field ?: throw RuntimeException("kubeCtlClient ikke initialiser")
+//        private set
+//
+//    fun startClient() {
+//        kubeCtlClient = KubeCtlClient()
+//    }
+// }
+
+object KubeCtlClient {
+    private val apiClient: ApiClient
     private val api: CoreV1Api
 
     init {
+        apiClient = Config.defaultClient()
         Configuration.setDefaultApiClient(apiClient)
         api = CoreV1Api()
     }
@@ -72,23 +83,6 @@ class KubeCtlClient {
             throw RuntimeException("Failed to get secret value: ${e.message}", e)
         }
     }
-
-    fun getStatus(): KubeCtlStatus {
-        try {
-            val kubeCtlClient = KubeCtlClient()
-            kubeCtlClient.getMaskinportenServiceNames()
-        } catch (e: Exception) {
-            if (e is ApiException && e.responseBody.isNotEmpty()) {
-                println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
-            }
-            return when {
-                e is ApiException && e.cause is SocketTimeoutException -> KubeCtlStatus.TIMEOUT
-                e is ApiException && (e.code == 403 || e.code == 401) -> KubeCtlStatus.UNAUTHORIZED
-                else -> KubeCtlStatus.UNKNOWN
-            }
-        }
-        return KubeCtlStatus.SUCCESS
-    }
 }
 
 enum class KubeCtlStatus {
@@ -96,4 +90,24 @@ enum class KubeCtlStatus {
     TIMEOUT,
     SUCCESS,
     UNKNOWN,
+}
+
+fun initialiserKubeCtlClient(): KubeCtlStatus {
+    try {
+        val kubeCtlClient = KubeCtlClient
+        kubeCtlClient.getMaskinportenServiceNames()
+    } catch (e: Exception) {
+        println("Stack trace error: ${e.stackTrace}")
+        println("Exception: ${e.message}")
+        println("cause: ${e.cause}")
+        if (e is ApiException && e.responseBody.isNotEmpty()) {
+            println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
+        }
+        return when {
+            e is SocketTimeoutException -> KubeCtlStatus.TIMEOUT
+            e is ApiException && (e.code == 403 || e.code == 401) -> KubeCtlStatus.UNAUTHORIZED
+            else -> KubeCtlStatus.UNKNOWN
+        }
+    }
+    return KubeCtlStatus.SUCCESS
 }

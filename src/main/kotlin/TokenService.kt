@@ -15,7 +15,7 @@ fun PipelineContext<Unit, ApplicationCall>.getSecret(serviceNavn: String): KubeC
         return cachedSecret
     }
 
-    val kubeCtlClient = KubeCtlClient()
+    val kubeCtlClient = KubeCtlClient
 
     val navnListe = kubeCtlClient.getMaskinportenServiceNames().filter { it.contains("maskinporten") }
 

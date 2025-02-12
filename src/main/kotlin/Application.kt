@@ -7,8 +7,7 @@ import io.ktor.server.application.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.FileOutputStream
-import java.io.PrintStream
+import kotlin.system.exitProcess
 
 val client = HttpClient(Apache5)
 
@@ -21,10 +20,11 @@ fun Application.module() {
     configureRouting()
 
     environment.monitor.subscribe(ApplicationStarted) {
-        val kubeCtlClient = KubeCtlClient()
-        val status = kubeCtlClient.getStatus()
+        val status = initialiserKubeCtlClient()
 
-        System.setErr(PrintStream(FileOutputStream("/dev/null")))
+        if (status != KubeCtlStatus.SUCCESS) {
+            exitProcess(0)
+        }
 
         GlobalScope.launch {
             delay(1000)
@@ -62,8 +62,7 @@ private fun printStartupMelding(status: KubeCtlStatus) {
 $red🛑 Serveren ble ikke startet$reset    
 
 ${red}${bold}Feil ved oppstart:$reset    
-   ${status.feilTekst()}
-    """
+   ${status.feilTekst()}"""
 
     val successTekst = """
 ${green}Server online$reset    
@@ -72,20 +71,13 @@ ${green}${bold}Hent token:$reset
   http://localhost:4242/token/maskinporten-hag-lps-api-client
       
 ${green}${bold}Swagger:$reset
-  http://localhost:4242/swagger
-    """
-
-    var result = green + bold + "Hent token:" + reset + "\n"
-    result += "  http://localhost:4242/token/maskinporten-hag-lps-api-client" + "\n"
-    result += "\n"
-    result += green + bold + "Swagger:" + reset + "\n"
-    result += "  http://localhost:4242/swagger" + "\n"
+  http://localhost:4242/swagger"""
 
     println("\n".repeat(2))
     println(blue + line + reset)
-    println(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
+    print(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
 
     println(if (status == KubeCtlStatus.SUCCESS) successTekst else feilTekst)
 
-    println(blue + line + reset)
+    print(blue + line + reset)
 }
