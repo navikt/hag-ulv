@@ -1,11 +1,40 @@
 meta {
-  name: Send inn Inntektsmelding
+  name: Send inn inntektsmelding
   type: http
   seq: 3
 }
 
-get {
-  url: nav.no noe noe
-  body: none
+post {
+  url: https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmelding
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "forespoerselId": "8e1ac9cc-34d4-4342-b865-3fb5fe9b154c",
+    "avsenderTlf": "99999999",
+    "agp": {
+      "perioder": [
+        {
+          "fom": "2024-09-30",
+          "tom": "2024-10-15"
+        }
+      ],
+      "egenmeldinger": [
+        {
+          "fom": "2024-09-30",
+          "tom": "2024-09-30"
+        }
+      ],
+      "redusertLoennIAgp": null
+    },
+    "inntekt": {
+      "beloep": 39001.0,
+      "inntektsdato": "2024-09-30",
+      "naturalytelser": [],
+      "endringAarsak": null
+    },
+    "refusjon": null
+  }
 }
