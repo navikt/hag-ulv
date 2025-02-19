@@ -1,0 +1,27 @@
+meta {
+  name: aktivitet
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{dialogId}}/activities
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": "019518dd-900d-74de-ab05-135ed6f0798e",
+    "type": "Information",
+    "performedBy": {
+      "actorType": "ServiceOwner"
+    },
+    "description": [
+      {
+        "value": "Innsendt inntektsmelding godkjent.",
+        "languageCode": "nb"
+      }
+    ]
+  }
+}
