@@ -1,11 +1,10 @@
 package no.nav.helsearbeidsgiver
 
-import io.ktor.http.*
-import io.ktor.network.sockets.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.*
-import io.ktor.server.response.*
-import io.ktor.util.pipeline.*
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.call
+import io.ktor.server.plugins.BadRequestException
+import io.ktor.server.response.header
+import io.ktor.util.pipeline.PipelineContext
 
 fun PipelineContext<Unit, ApplicationCall>.getSecret(serviceNavn: String): KubeCtlSecret {
     val cachedSecret = SecretsCache.getValue(serviceNavn)
@@ -28,7 +27,7 @@ fun PipelineContext<Unit, ApplicationCall>.getSecret(serviceNavn: String): KubeC
     return secret
 }
 
-fun PipelineContext<Unit, ApplicationCall>.getToken(
+fun PipelineContext<Unit, ApplicationCall>.getMaskinportenToken(
     serviceNavn: String,
     ekstraScope: String? = null,
 ): String {
@@ -36,3 +35,10 @@ fun PipelineContext<Unit, ApplicationCall>.getToken(
 
     return hentMaskinportenToken(secret, ekstraScope)
 }
+
+fun PipelineContext<Unit, ApplicationCall>.getAltinnToken(
+    serviceNavn: String,
+    ekstraScope: String? = null,
+): String =
+    getMaskinportenToken(serviceNavn, ekstraScope)
+        .veksleTilAltinnToken()
