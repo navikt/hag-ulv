@@ -40,3 +40,4 @@ suspend fun PipelineContext<Unit, ApplicationCall>.proxyKall() {
     }
     call.respondText("Ukjent feil")
 }
+// test token eyJhbGciOiJSU verdi
