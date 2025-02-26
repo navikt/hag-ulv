@@ -1,0 +1,50 @@
+meta {
+  name: opprett correspondence med sykmelding
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://platform.tt02.altinn.no/correspondence/api/v1/correspondence/upload
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Content-Type: multipart/form-data
+  Accept: application/json
+}
+
+body:multipart-form {
+  Recipients[0]: urn:altinn:organization:identifier-no:315587336
+  Correspondence.ResourceId: nav_sykepenger_inntektsmelding-nedlasting
+  Correspondence.Sender: {{altinnOrgIdNav}}
+  Correspondence.sendersReference: {{sendersReferenceCorrespondence}}
+  Correspondence.content.language: nb
+  Correspondence.content.messageTitle: Sykmelding for AKROBATISK PUS (f. 054494)
+  Correspondence.content.messageSummary: Sykmeldingsperiode 03.09.2024 - 26.09.2024
+  Correspondence.content.messageBody: Last ned sykmelding for AKROBATISK PUS (f. 054494).
+  Correspondence.content.attachments[0].DataLocationType: NewCorrespondenceAttachment
+  Correspondence.content.attachments[0].SendersReference: {{sendersReferencePdfAttachment}}
+  Correspondence.content.attachments[0].FileName: Eksempel-sykmelding.pdf
+  Correspondence.content.attachments[0].IsEncrypted: false
+  Correspondence.content.attachments[0].DataType: pdf
+  Correspondence.content.attachments[0].Name: Sykmelding for AKROBATISK PUS (f. 054494)
+  Correspondence.content.attachments[0].Sender: {{altinnOrgIdNav}}
+  Attachments: @file(./Eksempel-sykmelding.pdf)
+  Correspondence.content.attachments[1].DataLocationType: NewCorrespondenceAttachment
+  Correspondence.content.attachments[1].SendersReference: {{sendersReferenceXmlAttachment}}
+  Correspondence.content.attachments[1].FileName: Eksempel-sykmelding.xml
+  Correspondence.content.attachments[1].IsEncrypted: false
+  Correspondence.content.attachments[1].DataType: xml
+  Correspondence.content.attachments[1].Name: Sykmelding for AKROBATISK PUS (f. 054494)
+  Correspondence.content.attachments[1].Sender: {{altinnOrgIdNav}}
+  Attachments: @file(./Eksempel-sykmelding.xml)
+}
+
+script:pre-request {
+  bru.setVar('sendersReferenceCorrespondence', require("uuid").v4());
+  bru.setVar('sendersReferencePdfAttachment', require("uuid").v4());
+  bru.setVar('sendersReferenceXmlAttachment', require("uuid").v4());
+  bru.setVar('altinnOrgIdNav', 'urn:altinn:organization:identifier-no:889640782');
+}

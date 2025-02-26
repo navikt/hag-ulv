@@ -1,0 +1,59 @@
+meta {
+  name: avvis inntektsmelding
+  type: http
+  seq: 6
+}
+
+patch {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{opprettetDialogId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json-patch+json
+}
+
+body:json {
+  [
+    {
+      "op": "add",
+      "path": "/status",
+      "value": "RequiresAttention"
+    },
+    {
+      "op": "add",
+      "path": "/transmissions",
+      "value": [
+        {
+          "relatedTransmissionId": "{{inntektsmeldingTransmissionId}}",
+          "type": "Rejection",
+          "extendedType": "MANGLER_ENDRINGAARSAK_INNTEKT",
+          "sender": {
+            "actorType": "ServiceOwner"
+          },
+          "content": {
+            "title": {
+              "value": [
+                {
+                  "value": "Inntektsmelding ikke godkjent",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            },
+            "summary": {
+              "value": [
+                {
+                  "value": "Vennligst send inn inntektsmelding for AKROBATISK PUS for perioden 03.09.2024 - 26.09.2024 på nytt.",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

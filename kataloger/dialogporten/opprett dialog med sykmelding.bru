@@ -1,0 +1,114 @@
+meta {
+  name: opprett dialog med sykmelding
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs
+  body: json
+  auth: none
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "serviceResource": "urn:altinn:resource:nav_sykepenger_inntektsmelding-nedlasting",
+    "party": "urn:altinn:organization:identifier-no:315587336",
+    "externalReference": "{{externalDialogId}}",
+    "status": "New",
+    "content": {
+      "title": {
+        "value": [
+          {
+            "value": "Sykepenger for AKROBATISK PUS (f. 054494)",
+            "languageCode": "nb"
+          }
+        ],
+        "mediaType": "text/plain"
+      },
+      "summary": {
+        "value": [
+          {
+            "value": "Sykmeldingsperiode 03.09.2024 - 26.09.2024",
+            "languageCode": "nb"
+          }
+        ],
+        "mediaType": "text/plain"
+      }
+    },
+    "transmissions": [
+      {
+        "type": "Information",
+        "sender": {
+          "actorType": "ServiceOwner"
+        },
+        "content": {
+          "title": {
+            "value": [
+              {
+                "value": "Sykmelding",
+                "languageCode": "nb"
+              }
+            ],
+            "mediaType": "text/plain"
+          },
+          "summary": {
+            "value": [
+              {
+                "value": "Sykmelding for AKROBATISK PUS 03.09.2024 - 26.09.2024",
+                "languageCode": "nb"
+              }
+            ],
+            "mediaType": "text/plain"
+          }
+        },
+        "attachments": [
+          {
+            "displayName": [
+              {
+                "value": "Sykmelding AKROBATISK PUS 03.09.2024 - 26.09.2024.html",
+                "languageCode": "nb"
+              }
+            ],
+            "urls": [
+              {
+                "url": "https://arbeidsgiver.intern.dev.nav.no/im-dialog/8e1ac9cc-34d4-4342-b865-3fb5fe9b154c",
+                "mediaType": "application/pdf",
+                "consumerType": "Gui"
+              }
+            ]
+          },
+          {
+            "displayName": [
+              {
+                "value": "Sykmelding AKROBATISK PUS 03.09.2024 - 26.09.2024.json",
+                "languageCode": "nb"
+              }
+            ],
+            "urls": [
+              {
+                "url": "https://arbeidsgiver.intern.dev.nav.no/im-dialog/8e1ac9cc-34d4-4342-b865-3fb5fe9b154c",
+                "mediaType": "application/pdf",
+                "consumerType": "Api"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+vars:pre-request {
+  externalDialogId: 01951d86-5b14-7f87-b133-2000fbcc4b8e
+}
+
+script:post-response {
+  let dialogId = res.getBody().split("\"").join("")
+  bru.setVar("opprettetDialogId", dialogId);
+}

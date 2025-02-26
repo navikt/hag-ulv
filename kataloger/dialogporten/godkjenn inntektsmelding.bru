@@ -1,0 +1,57 @@
+meta {
+  name: godkjenn inntektsmelding
+  type: http
+  seq: 7
+}
+
+patch {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{opprettetDialogId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json-patch+json
+}
+
+body:json {
+  [
+    {
+      "op": "add",
+      "path": "/status",
+      "value": "InProgress"
+    },
+    {
+      "op": "add",
+      "path": "/transmissions",
+      "value": [
+        {
+          "type": "Acceptance",
+          "sender": {
+            "actorType": "ServiceOwner"
+          },
+          "content": {
+            "title": {
+              "value": [
+                {
+                  "value": "Inntektsmelding godkjent",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            },
+            "summary": {
+              "value": [
+                {
+                  "value": "Innsendt inntektsmelding for AKROBATISK PUS for perioden 03.09.2024 - 26.09.2024 er mottatt og godkjent.",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
