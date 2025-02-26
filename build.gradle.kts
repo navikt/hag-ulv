@@ -75,7 +75,7 @@ tasks.register("start") {
 
 
 
-task("no-token") {
+task("safe-commit") {
 
     println("⏳ Legger til pre-commit script ...")
     doLast {

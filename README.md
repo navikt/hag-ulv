@@ -10,12 +10,17 @@ Designet for testing i dev miljø og bruker automatisk dev-gcp context.
 ![](readme/token-server-diagram.png)
 
 ## Komme i gang
+
 ### Start severen
 
 `./release/bin/start` eller `gradle run`
 
 ### Hent en token
 http://localhost:4242/token/sykepenger-im-lps-api  
+
+### Sikker commits
+Kjør `gradle safe-commit` for å sette opp **git** til å aldri inkludere JWT tokens i prosjektet.  
+*(Anbefales om du skal gjøre endringer i Bruno kataloger)*
 
 ## Autentisert CURL
 Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
