@@ -39,5 +39,4 @@ suspend fun PipelineContext<Unit, ApplicationCall>.proxyKall() {
         return call.respondText("Error: ${e.message}")
     }
     call.respondText("Ukjent feil")
-
-}// test token eyJhbGciOiJSU verdi
+}
