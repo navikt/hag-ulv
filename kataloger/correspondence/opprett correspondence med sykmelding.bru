@@ -48,3 +48,7 @@ script:pre-request {
   bru.setVar('sendersReferenceXmlAttachment', require("uuid").v4());
   bru.setVar('altinnOrgIdNav', 'urn:altinn:organization:identifier-no:889640782');
 }
+
+docs {
+  Trenger Altinn-token med scopene altinn:correspondence.write altinn:correspondence.read altinn:serviceowner/instances.read altinn:serviceowner/instances.write og (ifølge docen) en subscription key som en 'Ocp-Apim-Subscription-Key'-header (ligger i nais). Se mer på https://docs.altinn.studio/correspondence/getting-started/.
+}
