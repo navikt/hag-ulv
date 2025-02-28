@@ -14,6 +14,8 @@ import java.util.*
 // OBS! VÆR FORSIKTIG MED Å ENDRE DENNE VARIABELEN
 val KUBE_CTL_CONTEXT = "dev-gcp"
 
+// test eyJraWQiOiJiZFhMRVduRGpMSGpwRThPZnl5TU
+
 data class KubeCtlSecret(
     val scope: String,
     val clientId: String,
