@@ -14,8 +14,6 @@ import java.util.*
 // OBS! VÆR FORSIKTIG MED Å ENDRE DENNE VARIABELEN
 val KUBE_CTL_CONTEXT = "dev-gcp"
 
-// test eyJraWQiOiJiZFhMRVduRGpMSGpwRThPZnl5TU
-
 data class KubeCtlSecret(
     val scope: String,
     val clientId: String,
@@ -46,10 +44,8 @@ object KubeCtlClient {
     }
 
     fun getMaskinportenServiceNames(): List<String> {
-        val secrets: V1SecretList
 
-        secrets =
-            api.listNamespacedSecret(
+        val secrets: V1SecretList = api.listNamespacedSecret(
                 "helsearbeidsgiver",
                 null,
                 null,
