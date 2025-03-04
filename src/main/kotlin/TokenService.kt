@@ -1,44 +1,60 @@
 package no.nav.helsearbeidsgiver
 
-import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.call
 import io.ktor.server.plugins.BadRequestException
-import io.ktor.server.response.header
-import io.ktor.util.pipeline.PipelineContext
+import no.nav.helsearbeidsgiver.KubeCtlClient.getServices
 
-fun PipelineContext<Unit, ApplicationCall>.getSecret(serviceNavn: String): KubeCtlSecret {
-    val cachedSecret = SecretsCache.getValue(serviceNavn)
-    call.response.header("Cache-Control", if (cachedSecret == null) "no-cache" else "max-age=infinity")
+enum class SecretType {
+    Maskinporten,
+    Altinn,
+    Azure,
+    TokenX,
+    Aiven,
+}
 
-    if (cachedSecret != null) {
-        return cachedSecret
+data class TokenResponse(
+    val token: String,
+    val erCached: Boolean,
+)
+
+class TokenService(
+    val secretType: SecretType,
+) {
+    fun hentTokenResponse(serviceNavn: String): TokenResponse {
+        val cachedSecret = SecretsCache.getValue(secretType, serviceNavn)
+
+        val secret = cachedSecret ?: this.hentSecret(serviceNavn)
+
+        val token = this.hentToken(secret)
+
+        return TokenResponse(
+            token = token,
+            erCached = cachedSecret != null,
+        )
     }
 
-    val kubeCtlClient = KubeCtlClient
+    private fun hentToken(secret: KubeSecret): String =
+        when (secretType) {
+            SecretType.Maskinporten -> hentMaskinportenToken(secret)
+            SecretType.Altinn -> hentMaskinportenToken(secret).veksleTilAltinnToken()
 
-    val navnListe = kubeCtlClient.getMaskinportenServiceNames().filter { it.contains("maskinporten") }
+            else -> throw NotImplementedError("Har ikke implementert den type secret ${secretType.name}")
+        }
 
-    val targetServiceNavn =
-        navnListe
-            .find { it.contains(serviceNavn) }
-            ?: throw BadRequestException("Fant ikke service. Må være en av disse:\n${navnListe.joinToString("\n")}")
+    private fun hentSecret(serviceNavn: String): KubeSecret {
+        val kubeCtlClient = KubeCtlClient
 
-    val secret = kubeCtlClient.getSecrets(targetServiceNavn)
-    return secret
+        val navnListe = getServices(secretType)
+
+        val targetServiceNavn =
+            navnListe
+                .find { it.contains(serviceNavn) }
+                ?: throw BadRequestException("Fant ikke service. Må være en av disse:\n${navnListe.joinToString("\n")}")
+
+        return kubeCtlClient.getSecrets(targetServiceNavn)
+    }
 }
 
-fun PipelineContext<Unit, ApplicationCall>.getMaskinportenToken(
-    serviceNavn: String,
-    ekstraScope: String? = null,
-): String {
-    val secret = getSecret(serviceNavn)
-
-    return hentMaskinportenToken(secret, ekstraScope)
-}
-
-fun PipelineContext<Unit, ApplicationCall>.getAltinnToken(
-    serviceNavn: String,
-    ekstraScope: String? = null,
-): String =
-    getMaskinportenToken(serviceNavn, ekstraScope)
-        .veksleTilAltinnToken()
+// fun PipelineContext<Unit, ApplicationCall>.getMaskinportenToken(serviceNavn: String): String {
+//    val secret = getSecret(serviceNavn)
+//    return hentMaskinportenToken(secret)
+// }

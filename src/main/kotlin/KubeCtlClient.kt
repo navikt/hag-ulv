@@ -1,6 +1,5 @@
 package no.nav.helsearbeidsgiver
 import io.kubernetes.client.openapi.ApiClient
-import io.kubernetes.client.openapi.ApiException
 import io.kubernetes.client.openapi.Configuration
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import io.kubernetes.client.openapi.models.V1SecretList
@@ -8,30 +7,24 @@ import io.kubernetes.client.util.Config
 import io.kubernetes.client.util.KubeConfig
 import java.io.File
 import java.io.FileReader
-import java.net.SocketTimeoutException
 import java.util.*
 
 // OBS! VÆR FORSIKTIG MED Å ENDRE DENNE VARIABELEN
 val KUBE_CTL_CONTEXT = "dev-gcp"
 
-data class KubeCtlSecret(
-    val scope: String,
-    val clientId: String,
-    val issuer: String,
-    val clientJwk: String,
-)
+typealias KubeSecret = Map<String, String>
 
-fun Map<String, ByteArray>.toKubeCtlSecret(): KubeCtlSecret =
-    KubeCtlSecret(
-        scope = parseKubeCtlVerdi("MASKINPORTEN_SCOPES"),
-        clientId = parseKubeCtlVerdi("MASKINPORTEN_CLIENT_ID"),
-        issuer = parseKubeCtlVerdi("MASKINPORTEN_ISSUER"),
-        clientJwk = parseKubeCtlVerdi("MASKINPORTEN_CLIENT_JWK"),
-    )
+fun Map<String, String>.value(key: String): String =
+    this[key] ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}\nFor kubectl json response: $this")
 
-private fun Map<String, ByteArray>.parseKubeCtlVerdi(nøkkel: String): String =
-    this[nøkkel]?.decodeToString()
-        ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: $nøkkel\nFor kubectl json response: $this")
+fun SecretType.getNameString() =
+    when (this) {
+        SecretType.Maskinporten -> "maskinporten"
+        SecretType.Altinn -> "maskinporten"
+        SecretType.Azure -> "azure"
+        SecretType.TokenX -> "tokenx"
+        SecretType.Aiven -> "aiven"
+    }
 
 object KubeCtlClient {
     private val apiClient: ApiClient
@@ -43,9 +36,9 @@ object KubeCtlClient {
         api = CoreV1Api()
     }
 
-    fun getMaskinportenServiceNames(): List<String> {
-
-        val secrets: V1SecretList = api.listNamespacedSecret(
+    private fun getServiceNames(): List<String> {
+        val secrets: V1SecretList =
+            api.listNamespacedSecret(
                 "helsearbeidsgiver",
                 null,
                 null,
@@ -63,7 +56,11 @@ object KubeCtlClient {
             .map { it.metadata?.name.toString() }
     }
 
-    fun getSecrets(serviceName: String): KubeCtlSecret {
+    private fun getServiceWithName(name: String): List<String> = getServiceNames().filter { it.contains(name) }
+
+    fun getServices(secretType: SecretType) = getServiceWithName(secretType.getNameString())
+
+    fun getSecrets(serviceName: String): KubeSecret {
         try {
             val response =
                 api.readNamespacedSecret(
@@ -71,7 +68,7 @@ object KubeCtlClient {
                     "helsearbeidsgiver",
                     null,
                 )
-            val secret = response.data?.toKubeCtlSecret() ?: throw RuntimeException("No data found in secret")
+            val secret = response.data?.mapValues { it.value.decodeToString() } ?: throw RuntimeException("No data found in secret")
             SecretsCache.setValue(serviceName, secret)
             return secret
         } catch (e: Exception) {
@@ -80,32 +77,32 @@ object KubeCtlClient {
     }
 }
 
-enum class KubeCtlStatus {
-    UNAUTHORIZED,
-    TIMEOUT,
-    SUCCESS,
-    UNKNOWN,
-}
-
-fun initialiserKubeCtlClient(): KubeCtlStatus {
-    try {
-        val kubeCtlClient = KubeCtlClient
-        kubeCtlClient.getMaskinportenServiceNames()
-    } catch (e: Exception) {
-        println("Stack trace error: ${e.stackTrace}")
-        println("Exception: ${e.message}")
-        println("cause: ${e.cause}")
-        if (e is ApiException && e.responseBody.isNotEmpty()) {
-            println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
-        }
-        return when {
-            e is SocketTimeoutException -> KubeCtlStatus.TIMEOUT
-            e is ApiException && (e.code == 403 || e.code == 401) -> KubeCtlStatus.UNAUTHORIZED
-            else -> KubeCtlStatus.UNKNOWN
-        }
-    }
-    return KubeCtlStatus.SUCCESS
-}
+// enum class KubeCtlStatus {
+//    UNAUTHORIZED,
+//    TIMEOUT,
+//    SUCCESS,
+//    UNKNOWN,
+// }
+//
+// fun initialiserKubeCtlClient(): KubeCtlStatus {
+//    try {
+//        val kubeCtlClient = KubeCtlClient
+//        kubeCtlClient.getMaskinportenServices()
+//    } catch (e: Exception) {
+//        println("Stack trace error: ${e.stackTrace}")
+//        println("Exception: ${e.message}")
+//        println("cause: ${e.cause}")
+//        if (e is ApiException && e.responseBody.isNotEmpty()) {
+//            println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
+//        }
+//        return when {
+//            e is SocketTimeoutException -> KubeCtlStatus.TIMEOUT
+//            e is ApiException && (e.code == 403 || e.code == 401) -> KubeCtlStatus.UNAUTHORIZED
+//            else -> KubeCtlStatus.UNKNOWN
+//        }
+//    }
+//    return KubeCtlStatus.SUCCESS
+// }
 
 fun hentDevGcpKubeConfig(): ApiClient {
     val kubeConfigFile = findConfigInHomeDir() ?: throw Exception("KubeConfigFile ikke funnet")

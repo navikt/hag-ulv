@@ -73,8 +73,6 @@ tasks.register("start") {
     }
 }
 
-
-
 task("safe-commit") {
 
     println("⏳ Legger til pre-commit script ...")
@@ -84,5 +82,4 @@ task("safe-commit") {
         }
     }
     println("✅ Lagt til no-token sikkerhet sjekk i pre-commit")
-
 }

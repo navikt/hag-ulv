@@ -1,6 +1,6 @@
 package no.nav.helsearbeidsgiver
 
-fun printStartupMelding(status: KubeCtlStatus) {
+fun printStartupMelding() {
     val reset = "\u001B[0m"
     val bold = "\u001B[1m"
     val blue = "\u001B[34m"
@@ -17,18 +17,18 @@ fun printStartupMelding(status: KubeCtlStatus) {
         return " ".repeat(padding) + text + " ".repeat(padding)
     }
 
-    fun KubeCtlStatus.feilTekst(): String =
-        when {
-            this == KubeCtlStatus.UNAUTHORIZED -> "Ikke autorisert - Logg på med: ${bold}${green}gcloud auth login$reset"
-            this == KubeCtlStatus.TIMEOUT -> "Timeout mot kubectl - Er du pålogget med ${bold}${green}NAIS$reset?"
-            else -> "Ukjent feil - Se på logs for flere detaljer"
-        }
+//    fun KubeCtlStatus.feilTekst(): String =
+//        when {
+//            this == KubeCtlStatus.UNAUTHORIZED -> "Ikke autorisert - Logg på med: ${bold}${green}gcloud auth login$reset"
+//            this == KubeCtlStatus.TIMEOUT -> "Timeout mot kubectl - Er du pålogget med ${bold}${green}NAIS$reset?"
+//            else -> "Ukjent feil - Se på logs for flere detaljer"
+//        }
 
-    val feilTekst = """
-$red🛑 Serveren ble ikke startet$reset    
-
-${red}${bold}Feil ved oppstart:$reset    
-   ${status.feilTekst()}"""
+//    val feilTekst = """
+// $red🛑 Serveren ble ikke startet$reset
+//
+// ${red}${bold}Feil ved oppstart:$reset
+//   ${status.feilTekst()}"""
 
     val successTekst = """
 ${green}Server online med context: [$KUBE_CTL_CONTEXT]$reset    
@@ -43,7 +43,8 @@ ${green}${bold}Swagger:$reset
     println(blue + line + reset)
     print(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
 
-    println(if (status == KubeCtlStatus.SUCCESS) successTekst else feilTekst)
+//    println(if (status == KubeCtlStatus.SUCCESS) successTekst else feilTekst)
+    println(successTekst)
 
     print(blue + line + reset)
 }

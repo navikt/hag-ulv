@@ -7,7 +7,6 @@ import io.ktor.server.application.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
 
 val client = HttpClient(Apache5)
 
@@ -20,15 +19,15 @@ fun Application.module() {
     configureRouting()
 
     environment.monitor.subscribe(ApplicationStarted) {
-        val status = initialiserKubeCtlClient()
-
-        if (status != KubeCtlStatus.SUCCESS) {
-            exitProcess(0)
-        }
+//        val status = initialiserKubeCtlClient()
+//
+//        if (status != KubeCtlStatus.SUCCESS) {
+//            exitProcess(0)
+//        }
 
         GlobalScope.launch {
             delay(1000)
-            printStartupMelding(status)
+            printStartupMelding()
         }
     }
 }
