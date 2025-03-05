@@ -8,6 +8,7 @@ plugins {
     id("io.ktor.plugin") version "2.3.12"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("maven-publish")
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
 group = "no.nav.helsearbeidsgiver"
@@ -56,6 +57,8 @@ dependencies {
 
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-client-apache5:$ktor_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 }
 
 tasks.register("start") {

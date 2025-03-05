@@ -1,5 +1,7 @@
 package no.nav.helsearbeidsgiver
 
+import no.nav.helsearbeidsgiver.kubernetes.KUBE_CTL_CONTEXT
+
 fun printStartupMelding() {
     val reset = "\u001B[0m"
     val bold = "\u001B[1m"

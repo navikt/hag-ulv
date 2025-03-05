@@ -20,6 +20,10 @@ fun Application.configureRouting() {
             handleGetTokenResponse(SecretType.Altinn)
         }
 
+        get("/azure-token/{service-navn}/{parameter?}") {
+            handleGetTokenResponse(SecretType.Azure)
+        }
+
         // Swagger nettside
         staticResources("/", "static")
 
@@ -44,7 +48,9 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleGetTokenRespons
             call.parameters["service-navn"]
                 ?: throw BadRequestException("Mangler parameter Maskinporten service")
 
-        val tokenResponse = TokenService(secretType).hentTokenResponse(serviceNavn)
+        val parameter = call.parameters["parameter"]
+
+        val tokenResponse = TokenService(secretType).hentTokenResponse(serviceNavn, parameter)
 
         call.response.header("Cache-Control", if (tokenResponse.erCached) "max-age=infinity" else "no-cache")
 

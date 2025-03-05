@@ -1,6 +1,8 @@
-package no.nav.helsearbeidsgiver
+package no.nav.helsearbeidsgiver.token
 
 import kotlinx.coroutines.runBlocking
+import no.nav.helsearbeidsgiver.kubernetes.KubeSecret
+import no.nav.helsearbeidsgiver.kubernetes.value
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigJwk
 

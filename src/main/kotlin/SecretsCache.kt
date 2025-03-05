@@ -1,5 +1,8 @@
 package no.nav.helsearbeidsgiver
 
+import no.nav.helsearbeidsgiver.kubernetes.KubeSecret
+import no.nav.helsearbeidsgiver.kubernetes.getNameString
+
 object SecretsCache {
     private var secretsCache: MutableMap<String, KubeSecret> = mutableMapOf()
 
