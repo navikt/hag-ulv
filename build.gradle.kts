@@ -72,3 +72,17 @@ tasks.register("start") {
         }
     }
 }
+
+
+
+task("safe-commit") {
+
+    println("⏳ Legger til pre-commit script ...")
+    doLast {
+        exec {
+            commandLine("cp", "./.scripts/pre-commit", "./.git/hooks")
+        }
+    }
+    println("✅ Lagt til no-token sikkerhet sjekk i pre-commit")
+
+}

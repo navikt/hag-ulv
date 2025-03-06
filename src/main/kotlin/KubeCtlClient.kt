@@ -44,10 +44,8 @@ object KubeCtlClient {
     }
 
     fun getMaskinportenServiceNames(): List<String> {
-        val secrets: V1SecretList
 
-        secrets =
-            api.listNamespacedSecret(
+        val secrets: V1SecretList = api.listNamespacedSecret(
                 "helsearbeidsgiver",
                 null,
                 null,

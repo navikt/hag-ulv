@@ -15,9 +15,9 @@ for file in $files; do
 
   # Check if file exists (it might have been deleted)
   if [ -f "$file" ]; then
-    # Look for the substring "eyJhb" and get the matching lines
+    # Look for the substring "eyJ" and get the matching lines
     while IFS= read -r line_content; do
-      if [[ "$line_content" == *"eyJhb"* ]]; then
+      if [[ "$line_content" == *"eyJ"* ]]; then
         # Get line number
         line_number=$(grep -n "$line_content" "$file" | cut -d: -f1)
         # Print error message in bold red text with the line content
