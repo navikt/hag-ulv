@@ -1,0 +1,41 @@
+meta {
+  name: hent dialog
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs/{{dialogId}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+vars:pre-request {
+  scopes: digdir:dialogporten
+  dialogId: 01955c42-0f83-7781-be90-b0db723d9e6f
+}
+
+script:pre-request {
+  const http = require('axios');
+  const responseSystembruker = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
+  )
+  
+  const token = responseSystembruker.data.tokenResponse.access_token;
+  
+  const responseAltinn = await http.get(
+    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+  
+  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+}

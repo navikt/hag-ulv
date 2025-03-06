@@ -1,12 +1,3 @@
 vars:pre-request {
-  orgnr: 315587336
-}
-
-script:pre-request {
-  const http = require('axios');
-  let response = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 
-    'orgnr=' + bru.getCollectionVar("orgnr")
-  )
-  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
+  tigersyskundeOrgnr: 315587336
 }

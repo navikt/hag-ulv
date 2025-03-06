@@ -110,5 +110,5 @@ vars:pre-request {
 
 script:post-response {
   let dialogId = res.getBody().split("\"").join("")
-  bru.setVar("opprettetDialogId", dialogId);
+  bru.setVar("dialogId", dialogId);
 }

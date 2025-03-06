@@ -1,11 +1,11 @@
 meta {
   name: send inn inntektsmelding
   type: http
-  seq: 3
+  seq: 2
 }
 
 post {
-  url: https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmelding
+  url: https://sykepenger-im-lps-api.ekstern.dev.nav.no/v1/inntektsmelding
   body: json
   auth: none
 }
@@ -37,4 +37,14 @@ body:json {
     },
     "refusjon": null
   }
+}
+
+script:pre-request {
+  const http = require('axios');
+  let response = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+  )
+
+  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
