@@ -41,6 +41,22 @@ body:json {
     },
     {
       "op": "add",
+      "path": "/apiActions",
+      "value": [
+        {
+          "action": "write",
+          "endpoints": [
+            {
+              "url": "https://sykepenger-im-lps-api.ekstern.dev.nav.no/v1/inntektsmelding",
+              "httpMethod": "POST",
+              "documentationUrl": "https://sykepenger-im-lps-api.ekstern.dev.nav.no/swagger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "op": "add",
       "path": "/transmissions",
       "value": [
         {
