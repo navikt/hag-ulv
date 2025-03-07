@@ -1,0 +1,44 @@
+meta {
+  name: opprett abonnement
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://platform.tt02.altinn.no/events/api/v1/subscriptions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "endPoint": "https://hag-lps-api-client.ekstern.dev.nav.no/dialogporten-event",
+    "resourceFilter": "urn:altinn:resource:nav_sykepenger_inntektsmelding-nedlasting",
+    "subjectFilter": "/organisation/315587336"
+  }
+}
+
+vars:pre-request {
+  scopes: altinn:events.subscribe
+}
+
+script:pre-request {
+  const http = require('axios');
+  const responseSystembruker = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
+  )
+  
+  const token = responseSystembruker.data.tokenResponse.access_token;
+  
+  const responseAltinn = await http.get(
+    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+  
+  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+}

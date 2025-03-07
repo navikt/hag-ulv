@@ -13,3 +13,13 @@ get {
 headers {
   accept: application/json
 }
+
+vars:pre-request {
+  eksempelDialogId: 01951d86-dd45-7251-9bce-fa02085bdbf3
+}
+
+script:pre-request {
+  if (bru.getVar("dialogId") === undefined) {
+    bru.setVar("dialogId", bru.getRequestVar("eksempelDialogId"));
+  }
+}
