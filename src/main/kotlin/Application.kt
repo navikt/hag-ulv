@@ -19,12 +19,6 @@ fun Application.module() {
     configureRouting()
 
     environment.monitor.subscribe(ApplicationStarted) {
-//        val status = initialiserKubeCtlClient()
-//
-//        if (status != KubeCtlStatus.SUCCESS) {
-//            exitProcess(0)
-//        }
-
         GlobalScope.launch {
             delay(1000)
             printStartupMelding()

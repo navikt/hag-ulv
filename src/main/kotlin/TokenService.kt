@@ -17,7 +17,7 @@ enum class SecretType {
 
 data class TokenResponse(
     val token: String,
-    val erCached: Boolean,
+    val secretErCached: Boolean,
 )
 
 class TokenService(
@@ -35,7 +35,7 @@ class TokenService(
 
         return TokenResponse(
             token = token,
-            erCached = cachedSecret != null,
+            secretErCached = cachedSecret != null,
         )
     }
 
@@ -64,8 +64,3 @@ class TokenService(
         return KubeCtlClient.getSecrets(targetServiceNavn)
     }
 }
-
-// fun PipelineContext<Unit, ApplicationCall>.getMaskinportenToken(serviceNavn: String): String {
-//    val secret = getSecret(serviceNavn)
-//    return hentMaskinportenToken(secret)
-// }

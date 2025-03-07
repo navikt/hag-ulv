@@ -13,7 +13,6 @@ private fun KubeSecret.tilMaskinportenConfig() =
         clientId = this.value("MASKINPORTEN_CLIENT_ID"),
         endpoint = "https://test.maskinporten.no/token",
         clientJwk = this.value("MASKINPORTEN_CLIENT_JWK"),
-        // additionalClaims = getSystemBrukerClaim("315587336"),
     )
 
 private fun getToken(secret: KubeSecret) =

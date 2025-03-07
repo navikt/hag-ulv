@@ -52,7 +52,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleGetTokenRespons
 
         val tokenResponse = TokenService(secretType).hentTokenResponse(serviceNavn, parameter)
 
-        call.response.header("Cache-Control", if (tokenResponse.erCached) "max-age=infinity" else "no-cache")
+        call.response.header("Cache-Control", if (tokenResponse.secretErCached) "max-age=infinity" else "no-cache")
 
         call.respondText(tokenResponse.token)
     } catch (e: SocketTimeoutException) {

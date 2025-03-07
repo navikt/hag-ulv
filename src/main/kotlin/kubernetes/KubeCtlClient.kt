@@ -71,30 +71,3 @@ object KubeCtlClient {
         }
     }
 }
-
-// enum class KubeCtlStatus {
-//    UNAUTHORIZED,
-//    TIMEOUT,
-//    SUCCESS,
-//    UNKNOWN,
-// }
-//
-// fun initialiserKubeCtlClient(): KubeCtlStatus {
-//    try {
-//        val kubeCtlClient = KubeCtlClient
-//        kubeCtlClient.getMaskinportenServices()
-//    } catch (e: Exception) {
-//        println("Stack trace error: ${e.stackTrace}")
-//        println("Exception: ${e.message}")
-//        println("cause: ${e.cause}")
-//        if (e is ApiException && e.responseBody.isNotEmpty()) {
-//            println("Feil med kubectl:\n\u001B[1;31m${e.responseBody}\u001B[0m")
-//        }
-//        return when {
-//            e is SocketTimeoutException -> KubeCtlStatus.TIMEOUT
-//            e is ApiException && (e.code == 403 || e.code == 401) -> KubeCtlStatus.UNAUTHORIZED
-//            else -> KubeCtlStatus.UNKNOWN
-//        }
-//    }
-//    return KubeCtlStatus.SUCCESS
-// }
