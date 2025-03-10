@@ -12,12 +12,16 @@ import java.io.File
 
 fun Application.configureRouting() {
     routing {
-        get("/token/{service-navn}/{ekstra-scope?}") {
-            handleGetTokenResponse()
+        get("/token/{service-navn}") {
+            handleGetTokenResponse(SecretType.Maskinporten)
         }
 
-        get("/altinn-token/{service-navn}/{ekstra-scope?}") {
-            handleGetTokenResponse(veksleMedAltinn = true)
+        get("/altinn-token/{service-navn}") {
+            handleGetTokenResponse(SecretType.Altinn)
+        }
+
+        get("/azure-token/{service-navn}/{parameter?}") {
+            handleGetTokenResponse(SecretType.Azure)
         }
 
         // Swagger nettside
@@ -38,18 +42,19 @@ fun Application.configureRouting() {
     }
 }
 
-private suspend fun PipelineContext<Unit, ApplicationCall>.handleGetTokenResponse(veksleMedAltinn: Boolean = false) {
+private suspend fun PipelineContext<Unit, ApplicationCall>.handleGetTokenResponse(secretType: SecretType) {
     try {
         val serviceNavn =
-            call.parameters["service-navn"] ?: throw BadRequestException("Mangler parameter Maskinporten service")
+            call.parameters["service-navn"]
+                ?: throw BadRequestException("Mangler parameter Maskinporten service")
 
-        val ekstraScope = call.parameters["ekstra-scope"]
+        val parameter = call.parameters["parameter"]
 
-        val maskinportenToken = getMaskinportenToken(serviceNavn, ekstraScope)
+        val tokenResponse = TokenService(secretType).hentTokenResponse(serviceNavn, parameter)
 
-        val token = if (veksleMedAltinn) maskinportenToken.veksleTilAltinnToken() else maskinportenToken
+        call.response.header("Cache-Control", if (tokenResponse.secretErCached) "max-age=infinity" else "no-cache")
 
-        call.respondText(token)
+        call.respondText(tokenResponse.token)
     } catch (e: SocketTimeoutException) {
         call.respond(
             HttpStatusCode.Unauthorized,
