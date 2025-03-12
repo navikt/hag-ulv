@@ -82,7 +82,7 @@ Disse JWK secrets brukes for å hente nye maskinporten tokens for hver request f
 ## Obs!
 
 - Om du prøver en å hente token for en ny tjeneste som ikke er "cached" fra tidligere så kan du være utlogget på GCloud.
-- JWK secrets kan i sjeldne tilfeller bli utdaterte! Da må serveren startes på nytt.
+- JWK secrets kan i sjeldne tilfeller bli utdaterte! Da må serveren startes på nytt. 
 
 
 ## Ekstra
