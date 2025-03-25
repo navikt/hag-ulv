@@ -22,7 +22,7 @@ http://localhost:4242/token/sykepenger-im-lps-api
 Kjør `gradle safe-commit` for å sette opp **git** til å aldri inkludere JWT tokens i prosjektet.  
 *(Anbefales om du skal gjøre endringer i Bruno kataloger)*
 
-## Autentisert CURL
+## Test med autentisert CURL
 Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
 ```
 curl -X 'GET' \
@@ -32,22 +32,38 @@ curl -X 'GET' \
 | jq
 ```
 
-## Autentisert HTTP Kataloger
+## Autentisert Bruno Katalog
 
 Disse HTTP katalogene henter automatisk nye tokens for requests ved bruk av pre-request scripts [(bruno eksempel)](./readme/bruno-prescript-eksempel.png).
 
 
-
-### **Bruno:**
 ```
 brew install bruno && open /Applications/Bruno.app
 ```
-Mac menu bar: `Bruno` > `Open Collection` > `hag-api-testing-katalog/kataloger/dialogporten`
 
-### **Postman:**
 ```
-brew install postman && open /Applications/Postman.app
+Øverst til venstre  Apple meny: Bruno > Open Collection > hag-token-HTTP-katalog/kataloger/dialogporten
 ```
+
+![bruno eksempel](./readme/bruno-open-collection.png)
+
+![bruno eksempel](./readme/bruno-open-collection-folder.png)
+
+Variabler er satt i `vars` vinduet og kan brukes i URL og i pre-request scripts.
+
+<img src="./readme/bruno-var-eksempel.png" alt="Bruno eksempel" width="400" />  
+
+
+Scripts er satt i `pre-request` vinduet. Denne henter tokens automatisk.  
+(kan defineres for hele katalogen eller for enkelt requests)
+
+
+<img src="./readme/bruno-pre-request-script.png" alt="Bruno eksempel" width="500" />
+
+
+### (Postman)
+En Postman json demo er inkludert med et enkelt eksempel på hvordan å sette opp pre-request scripts for å hente tokens automatisk.
+
 Mac menu bar: `File` > `Import Collection` > `hag-api-testing-katalog/kataloger/postman.json`
 
 ## Autentisert Swagger
@@ -82,7 +98,7 @@ Disse JWK secrets brukes for å hente nye maskinporten tokens for hver request f
 ## Obs!
 
 - Om du prøver en å hente token for en ny tjeneste som ikke er "cached" fra tidligere så kan du være utlogget på GCloud.
-- JWK secrets kan i sjeldne tilfeller bli utdaterte! Da må serveren startes på nytt. eyJ. eyJ.. eyJ..
+- JWK secrets kan i sjeldne tilfeller bli utdaterte! Da må serveren startes på nytt.
 
 
 ## Ekstra
