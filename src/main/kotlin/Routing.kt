@@ -12,6 +12,10 @@ import java.io.File
 
 fun Application.configureRouting() {
     routing {
+        get("/kafka/{service-navn?}") {
+            handleKafkaUiResponse()
+        }
+
         get("/token/{service-navn}") {
             handleGetTokenResponse(SecretType.Maskinporten)
         }
@@ -46,7 +50,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleGetTokenRespons
     try {
         val serviceNavn =
             call.parameters["service-navn"]
-                ?: throw BadRequestException("Mangler parameter Maskinporten service")
+                ?: throw BadRequestException("Mangler parameter service")
 
         val parameter = call.parameters["parameter"]
 
