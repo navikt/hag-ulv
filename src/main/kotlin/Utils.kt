@@ -1,7 +1,9 @@
 package no.nav.helsearbeidsgiver
 
-import no.nav.helsearbeidsgiver.kubernetes.KUBE_CTL_CONTEXT
+import no.nav.helsearbeidsgiver.kubernetes.KUBE_CTL_CONTEXT_ER_ALLTID_DEV
 import java.io.File
+import java.util.Locale
+import kotlin.system.exitProcess
 
 fun printStartupMelding() {
     val reset = "\u001B[0m"
@@ -21,7 +23,7 @@ fun printStartupMelding() {
     }
 
     val successTekst = """
-${green}Server online med context: [$KUBE_CTL_CONTEXT]$reset    
+${green}Server online med context: [$KUBE_CTL_CONTEXT_ER_ALLTID_DEV]$reset    
         
 ${green}${bold}Hent token:$reset    
   http://localhost:4242/token/maskinporten-hag-lps-api-client
@@ -69,3 +71,23 @@ fun lagTempFil(
 ): String = lagTempFil(fileName, content.encodeToByteArray())
 
 fun cleanServiceName(name: String): String = name.replace(Regex("^[^-]*-|(?:-[^-]*){4}$"), "")
+
+fun giBrukerAdvarselBrukDev() {
+    val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+
+    val command =
+        when {
+            os.contains("mac") ->
+                listOf(
+                    "osascript",
+                    "-e",
+                    "display alert \"🛑 STOP! 🛑\" message \"Programmet må bare brukes i DEV miljø!\nProgrammer avsluttes\" as warning",
+                )
+            os.contains("win") ->
+                listOf("powershell", "-command", "[System.Windows.MessageBox]::Show('Programmet må bare brukes i DEV miljø!', 'STOP!')")
+            else -> return
+        }
+
+    ProcessBuilder(command).start()
+    exitProcess(0)
+}
