@@ -10,11 +10,10 @@ import java.util.*
 typealias KubeSecret = Map<String, ByteArray>
 
 fun Map<String, ByteArray>.value(key: String): String =
-    this[key]?.decodeToString() ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}\nFor kubectl json response: $this")
+    this[key]?.decodeToString() ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}")
 
 fun Map<String, ByteArray>.rawBytevalue(key: String): ByteArray =
-    this[key] ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}\nFor kubectl json response: $this")
-
+    this[key] ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}")
 fun SecretType.getNameString() =
     when (this) {
         SecretType.Maskinporten -> "maskinporten"
