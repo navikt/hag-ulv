@@ -12,30 +12,30 @@ post {
 
 body:json {
   {
-    "navReferanseId": "0206a5d7-2e3d-49c3-a034-13b99a5e1eee",
+    "navReferanseId": "6338bdad-6de5-4592-8b0f-c816e343c6e0",
     "agp": {
       "perioder": [
         {
-          "fom": "2024-09-30",
-          "tom": "2024-10-15"
+          "fom": "2024-12-01",
+          "tom": "2024-12-15"
         }
       ],
       "egenmeldinger": [
         {
-          "fom": "2024-09-30",
-          "tom": "2024-09-30"
+          "fom": "2024-11-30",
+          "tom": "2024-11-30"
         }
       ],
       "redusertLoennIAgp": null
     },
     "inntekt": {
-      "beloep": 39009.0,
-      "inntektsdato": "2024-09-30",
+      "beloep": 30029.0,
+      "inntektsdato": "2024-11-30",
       "naturalytelser": [],
-      "endringAarsak": null
+      "endringAarsaker": []
     },
     "refusjon": null,
-    "sykmeldtFnr": "10107400090",
+    "sykmeldtFnr": "17853748722",
     "arbeidsgiverTlf": "12345678",
     "aarsakInnsending": "Ny",
     "avsender": {
@@ -51,6 +51,6 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-
+  
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
