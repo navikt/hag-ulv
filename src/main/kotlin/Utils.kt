@@ -81,7 +81,7 @@ fun giBrukerAdvarselBrukDev() {
                 listOf(
                     "osascript",
                     "-e",
-                    "display alert \"🛑 STOP! 🛑\" message \"Programmet må bare brukes i DEV miljø!\nProgrammer avsluttes\" as warning",
+                    "display alert \"🛑 STOP! 🛑\" message \"Programmet må bare brukes i DEV miljø!\nProgrammer avsluttes\" as critical",
                 )
             os.contains("win") ->
                 listOf("powershell", "-command", "[System.Windows.MessageBox]::Show('Programmet må bare brukes i DEV miljø!', 'STOP!')")
