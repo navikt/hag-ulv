@@ -15,17 +15,16 @@ auth:bearer {
 }
 
 vars:pre-request {
-  scopes: nav:helse/im.read
-  orgnr: 810007842
-  id: bbaa6bcb-cdff-4b85-8e43-ed49baaaeb07
+  orgnr: 311567470
+  id: 0a380626-8856-4a8a-9960-97d00cb1041e
+  ~scopes: nav:helse/im.read
 }
 
 script:pre-request {
   const http = require('axios');
-  const responseSystembruker = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 
-    'orgnr=' + bru.getRequestVar("orgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
-  )
+  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311567470', {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  });
   
   const token = responseSystembruker.data.tokenResponse.access_token;
   req.setHeader('Authorization', "Bearer "+ token);
