@@ -4,8 +4,12 @@ meta {
   seq: 10
 }
 
-get {
-  url: 
-  body: none
+post {
+  url: https://hag-lps-api-client.ekstern.dev.nav.no/systembruker
+  body: formUrlEncoded
   auth: none
+}
+
+body:form-urlencoded {
+  orgnr: 311567470
 }
