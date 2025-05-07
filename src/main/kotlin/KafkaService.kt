@@ -6,20 +6,40 @@ import io.ktor.server.application.call
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.response.respondText
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.helsearbeidsgiver.KafkaService.startKafkaUi
 import no.nav.helsearbeidsgiver.kubernetes.KubeCtlClient
 import no.nav.helsearbeidsgiver.kubernetes.KubeSecret
 import no.nav.helsearbeidsgiver.kubernetes.rawBytevalue
 import no.nav.helsearbeidsgiver.kubernetes.value
+import java.io.File
+import java.nio.file.Paths
+
+const val DOCKER_IMAGE = "ghcr.io/kafbat/kafka-ui"
+const val DOCKER_KEYSTORE_PATH = "/tmp/client.keystore.p12"
+const val DOCKER_TRUSTSTORE_PATH = "/tmp/client.truststore.jks"
+const val DOCKER_CONFIG_PATH = "/tmp/config.yml"
+
+fun lagLokalFil(
+    navn: String,
+    data: ByteArray,
+): String {
+    val file = Paths.get(File(System.getProperty("user.dir")).absolutePath, "kafka-ui", navn).toFile()
+    file.writeBytes(data)
+    file.deleteOnExit()
+    return file.absolutePath
+}
 
 suspend fun PipelineContext<Unit, ApplicationCall>.handleKafkaUiResponse() {
     try {
         val serviceNavn = call.parameters["service-navn"] ?: throw BadRequestException("Mangler parameter")
+        println("MOTATT REQUEST >$serviceNavn<")
         val secret = TokenService(SecretType.Aiven).hentSecret(serviceNavn = serviceNavn)
 
-        startKafkaUi(secret)
+        val imageErInstallert = imageEksisterer(DOCKER_IMAGE)
+        println("Image installert: $imageErInstallert")
 
-        call.respondText(kafkaHtmlSide(htmlLoading(serviceNavn)), ContentType.Text.Html)
+        call.respondText(kafkaHtmlSide(htmlLoading(serviceNavn, imageErInstallert)), ContentType.Text.Html)
+
+        startKafkaUi(secret)
     } catch (e: BadRequestException) {
         val servicer =
             KubeCtlClient
@@ -33,83 +53,44 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleKafkaUiResponse() {
     }
 }
 
-val configName = "kafka-ui-application-local.yml"
-var runningProcess: Process? = null
+fun startKafkaUi(secret: KubeSecret) {
+    val keystorePath = "client.keystore.p12".let { key -> lagLokalFil(key, secret.rawBytevalue(key)) }
+    val truststorePath = "client.truststore.jks".let { key -> lagLokalFil(key, secret.rawBytevalue(key)) }
 
-object KafkaService {
-    init {
-        Runtime.getRuntime().addShutdownHook(
-            Thread {
-                println("⏻ Skrur av kafka-ui prosess")
-                runningProcess?.destroy()
-                runningProcess?.waitFor()
-            },
-        )
-    }
+    val kafkaBrokers = secret.value("KAFKA_BROKERS")
+    val configInnhold = generereKafkaUiConfig(bootstrapServers = kafkaBrokers)
+    val configPath = lagLokalFil("config.yml", configInnhold.toByteArray())
 
-    fun startKafkaUi(secret: KubeSecret) {
-        val jarPath = resolveAbsolutePath("kafka/kafka-ui-api-v0.7.2.jar")
+    val cmd: List<String> =
+        listOf(
+            "docker run -d -it -p 8080:8080 --platform linux/amd64".split(" "),
+            listOf("-v", "$keystorePath:$DOCKER_KEYSTORE_PATH:ro"),
+            listOf("-v", "$truststorePath:$DOCKER_TRUSTSTORE_PATH:ro"),
+            listOf("-v", "$configPath:$DOCKER_CONFIG_PATH"),
+            listOf("-e", "spring.config.additional-location=$DOCKER_CONFIG_PATH"),
+            listOf(DOCKER_IMAGE),
+        ).flatten()
 
-        val keystorePath = "client.keystore.p12".let { key -> lagTempFil(key, secret.rawBytevalue(key)) }
-        val truststorePath = "client.truststore.jks".let { key -> lagTempFil(key, secret.rawBytevalue(key)) }
-
-        println("Keystore path: $keystorePath")
-        println("Truststore path: $truststorePath")
-        println("kafka brokers: ${secret.value("KAFKA_BROKERS")}")
-
-        val configContent =
-            generereKafkaUiConfig(
-                bootstrapServers = secret.value("KAFKA_BROKERS"),
-                keystorePath = keystorePath,
-                truststorePath = truststorePath,
-            )
-
-        val configPath = lagTempFil(configName, configContent)
-
-        try {
-            runningProcess?.destroy()
-            runningProcess?.waitFor()
-        } catch (e: InterruptedException) {
-            println("Interrupted while running")
-        }
-
-        runningProcess = null
-
-        runningProcess =
-            ProcessBuilder(
-                "java",
-                "-Dspring.config.additional-location=$configPath",
-                "-jar",
-                jarPath,
-                "-Dspring.security.headers.frame-options.enabled=false",
-            ).inheritIO().start()
-    }
+    DockerManager.startContainer(cmd)
 }
 
-fun generereKafkaUiConfig(
-    bootstrapServers: String,
-    keystorePath: String,
-    truststorePath: String,
-): String {
-    val configContent =
-        """
-        kafka:
-          clusters:
-            - bootstrap-servers: "$bootstrapServers"  # Fill in the bootstrap servers
-              properties:
-                security.protocol: "SSL"  # Fill in the security protocol (e.g., SSL)
-                ssl:
-                  truststore:
-                    location: $truststorePath
-                    password: "changeme"  # Reference property or environment variable
-                  keystore:
-                    location: $keystorePath
-                    password: "changeme"  # Reference property or environment variable
-                    type: PKCS12
-        """.trimIndent()
-
-    return configContent
-}
+fun generereKafkaUiConfig(bootstrapServers: String): String =
+    """
+    kafka:
+      clusters:
+        - bootstrap-servers: "$bootstrapServers"
+          name: "kafka-ui" 
+          properties:
+            security.protocol: "SSL"
+            ssl:
+              truststore:
+                location: $DOCKER_TRUSTSTORE_PATH
+                password: "changeme"
+              keystore:
+                location: $DOCKER_KEYSTORE_PATH
+                password: "changeme"
+                type: PKCS12
+    """.trimIndent()
 
 // ---------------------------- HTML rendering funksoner ----------------------------
 fun htmlVelg(servicer: List<String>) =
@@ -124,19 +105,23 @@ fun htmlVelg(servicer: List<String>) =
                 </ul>
     """.trimIndent()
 
-fun String?.tilKafkaUiUrl(): String =
-    "http://localhost:8080/ui/clusters/Default/all-topics/$this/messages?seekDirection=BACKWARD&seekType=LATEST"
+fun String?.tilKafkaUiUrl(): String = "http://localhost:8080/ui/clusters/kafka-ui/all-topics/$this/messages?limit=100&mode=LATEST"
 
-fun htmlLoading(serviceNavn: String): String {
-    val loadingTimeMs = 4000
+fun htmlLoading(
+    serviceNavn: String,
+    imageInstallert: Boolean,
+): String {
+    val loadingTimeMs = if (imageInstallert) 20 * 1000 else 50 * 1000
     val redirectUrl =
         when {
             serviceNavn.contains("lps-api") -> "teamsykmelding.syfo-sendt-sykmelding".tilKafkaUiUrl()
             serviceNavn.startsWith("im") -> "helsearbeidsgiver.rapid".tilKafkaUiUrl()
-            else -> "http://localhost:8080/ui/clusters/Default/all-topics?perPage=25&q=helsearbeidsgiver"
+            else -> "http://localhost:8080/ui/clusters/kafka-ui/all-topics?perPage=25&q=helsearbeidsgiver"
         }
     return """
         <div>Starter Kafka UI med rettigheter for <strong>$serviceNavn</strong></div>
+        ${if (imageInstallert) "" else "<br><div>Docker image ikke funnet og blir nå nedlastet i bakgrunnen.</div>"}
+        <br><div>Du blir videresendt om ${loadingTimeMs / 1000} sekunder.</div>
          <div class="spinner"></div>
          <script>
             setTimeout(function() {

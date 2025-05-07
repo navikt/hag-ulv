@@ -40,6 +40,8 @@ out/
 ### VS Code ###
 .vscode/
 
+kafka-ui/
+
 ### I banish you to never return DS_Store! ###
 .DS_Store
 ._.DS_Store

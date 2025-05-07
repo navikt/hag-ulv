@@ -1,7 +1,6 @@
 package no.nav.helsearbeidsgiver
 
 import no.nav.helsearbeidsgiver.kubernetes.KUBE_CTL_CONTEXT_ER_ALLTID_DEV
-import java.io.File
 import java.util.Locale
 import kotlin.system.exitProcess
 
@@ -29,7 +28,7 @@ ${green}${bold}Hent token:$reset
   http://localhost:4242/token/maskinporten-hag-lps-api-client
       
 ${green}${bold}Kafka UI:$reset
-http://localhost:4242/kafka"""
+  http://localhost:4242/kafka"""
 
     println("\n".repeat(2))
     println(blue + line + reset)
@@ -39,36 +38,6 @@ http://localhost:4242/kafka"""
 
     println(blue + line + reset)
 }
-
-fun resolveAbsolutePath(path: String): String {
-    val baseDir =
-        File(
-            object {}
-                .javaClass.protectionDomain.codeSource.location
-                .toURI(),
-        )
-
-    // Going up from build level
-    val repoRootDir = baseDir.parentFile.parentFile.parentFile.parentFile
-
-    return File(repoRootDir, path).canonicalFile.absolutePath
-}
-
-fun lagTempFil(
-    fileName: String,
-    content: ByteArray,
-): String {
-    val suffix = "." + fileName.substringAfterLast('.', "tmp")
-    val tempFile = File.createTempFile(fileName.substringBeforeLast('.'), suffix)
-    tempFile.writeBytes(content)
-    tempFile.deleteOnExit()
-    return tempFile.absolutePath
-}
-
-fun lagTempFil(
-    fileName: String,
-    content: String,
-): String = lagTempFil(fileName, content.encodeToByteArray())
 
 fun cleanServiceName(name: String): String = name.replace(Regex("^[^-]*-|(?:-[^-]*){4}$"), "")
 
