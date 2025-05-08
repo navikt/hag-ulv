@@ -29,15 +29,15 @@ body:json {
       "redusertLoennIAgp": null
     },
     "inntekt": {
-      "beloep": 30029.0,
+      "beloep": 30027.0,
       "inntektsdato": "2024-11-30",
       "naturalytelser": [],
       "endringAarsaker": []
     },
     "refusjon": null,
-    "sykmeldtFnr": "17853748722",
+    "sykmeldtFnr": "05449412615",
     "arbeidsgiverTlf": "12345678",
-    "aarsakInnsending": "Ny",
+    "aarsakInnsending": "Endring",
     "avsender": {
       "systemNavn": "Bruno FTW!",
       "systemVersjon": "1.1"
@@ -51,6 +51,6 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-  
+
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
