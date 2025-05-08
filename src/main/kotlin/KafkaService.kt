@@ -182,7 +182,7 @@ fun kafkaHtmlSide(customHtmlContent: String): String =
         </head>
        
         <body>
-            <h3>HAG Utvikler Verktøy</h3>
+            <h3>HAG Utvikler Løsnings Verktøy</h3>
             <h1>Kafka UI</h1>
             $customHtmlContent
         </body>

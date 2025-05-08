@@ -6,37 +6,45 @@ import kotlin.system.exitProcess
 
 fun printStartupMelding() {
     val reset = "\u001B[0m"
-    val bold = "\u001B[1m"
-    val blue = "\u001B[34m"
-    val green = "\u001B[32m"
-    val cyan = "\u001B[36m"
-    val red = "\u001B[31m"
-    val line = "-".repeat(60)
+    val orange = "\u001B[38;5;208m"
+    val brightCyan = "\u001B[38;5;117m"
 
-    fun centerText(
-        text: String,
-        width: Int = 60,
-    ): String {
-        val padding = (width - text.length) / 2
-        return " ".repeat(padding) + text + " ".repeat(padding)
-    }
+    val paddingWidth = 11
+    val asciiWidth = 39
 
-    val successTekst = """
-${green}Server online med context: [$KUBE_CTL_CONTEXT_ER_ALLTID_DEV]$reset    
+    val linjeAscii = orange + "/".repeat(asciiWidth + paddingWidth * 2 + 2) + reset
+
+    println("\n\n")
+    println(linjeAscii)
+    println(
+        """
+        $orange
+                                    .
+                                   / V\
+ ____ ____ ___ ____   _____      / `  /
+|    |    \   |    \ /    /     <<   |
+|    |    /   |\    Y    /     /     |
+|    |   /|   |_\__     /    /       |
+|_______/ |_______/____/   /    \ \ /
+                          (      )| |
+                  ________|   _/_ | |
+                <__________\_____)\__)
+     
+    HAG Utvikler Løsnings Verktøy
+        $reset
+        """.trimIndent().prependIndent(" ".repeat(paddingWidth)),
+    )
+    val successTekst =
+        """
+        ${brightCyan}Token Server $KUBE_CTL_CONTEXT_ER_ALLTID_DEV: [online]$reset    
         
-${green}${bold}Hent token:$reset    
-  http://localhost:4242/token/maskinporten-hag-lps-api-client
-      
-${green}${bold}Kafka UI:$reset
-  http://localhost:4242/kafka"""
-
-    println("\n".repeat(2))
-    println(blue + line + reset)
-    print(bold + cyan + centerText("🔑 Maskinporten Token Server 🔑") + reset)
-
-    println(successTekst)
-
-    println(blue + line + reset)
+        ${brightCyan}Kafka UI:$reset   http://localhost:4242/kafka
+                
+        ${brightCyan}Hent token:$reset http://localhost:4242/token/hag-lps-api-client
+        
+        """.trimIndent()
+    println(successTekst.prependIndent(" "))
+    println(linjeAscii)
 }
 
 fun cleanServiceName(name: String): String = name.replace(Regex("^[^-]*-|(?:-[^-]*){4}$"), "")
