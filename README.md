@@ -32,7 +32,7 @@ curl -X 'GET' \
 
 Bruno er et open source alternativ til Postman som er designet for å dele innhold med team i git repo. 
 
-All lagret kall for Bruno befinner seg i `kataloger` mappen.
+Alle HTTP kall for Bruno befinner seg i `kataloger` mappen.
 
 Når du gjør endringer i Bruno oppdateres automatisk filene i mappen.
 
