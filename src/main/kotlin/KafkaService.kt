@@ -22,7 +22,12 @@ fun lagLokalFil(
     navn: String,
     data: ByteArray,
 ): String {
-    val file = Paths.get(File(System.getProperty("user.dir")).absolutePath, "kafka-ui", navn).toFile()
+    val kafkaUiDir = Paths.get(File(System.getProperty("user.dir")).absolutePath, "kafka-ui").toFile()
+    if (!kafkaUiDir.exists()) {
+        kafkaUiDir.mkdir()
+    }
+
+    val file = File(kafkaUiDir, navn)
     file.writeBytes(data)
     file.deleteOnExit()
     return file.absolutePath
@@ -54,6 +59,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleKafkaUiResponse() {
 }
 
 fun startKafkaUi(secret: KubeSecret) {
+    println("-- STARTER KAFKA UI --")
     val keystorePath = "client.keystore.p12".let { key -> lagLokalFil(key, secret.rawBytevalue(key)) }
     val truststorePath = "client.truststore.jks".let { key -> lagLokalFil(key, secret.rawBytevalue(key)) }
 
@@ -63,11 +69,12 @@ fun startKafkaUi(secret: KubeSecret) {
 
     val cmd: List<String> =
         listOf(
-            "docker run -d -it -p 8080:8080 --platform linux/amd64".split(" "),
+            "docker run -d -it -p 8080:8080".split(" "),
             listOf("-v", "$keystorePath:$DOCKER_KEYSTORE_PATH:ro"),
             listOf("-v", "$truststorePath:$DOCKER_TRUSTSTORE_PATH:ro"),
             listOf("-v", "$configPath:$DOCKER_CONFIG_PATH"),
             listOf("-e", "spring.config.additional-location=$DOCKER_CONFIG_PATH"),
+            listOf("-e", "JAVA_TOOL_OPTIONS:\"-XX:UseSVE=0\""),
             listOf(DOCKER_IMAGE),
         ).flatten()
 

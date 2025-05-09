@@ -4,21 +4,19 @@ import no.nav.helsearbeidsgiver.kubernetes.KUBE_CTL_CONTEXT_ER_ALLTID_DEV
 import java.util.Locale
 import kotlin.system.exitProcess
 
-fun printStartupMelding() {
-    val reset = "\u001B[0m"
-    val orange = "\u001B[38;5;208m"
-    val brightCyan = "\u001B[38;5;117m"
+const val reset = "\u001B[0m"
+const val orange = "\u001B[38;5;208m"
+const val brightCyan = "\u001B[38;5;117m"
 
+fun printStartupMelding() {
     val paddingWidth = 11
     val asciiWidth = 39
 
-    val linjeAscii = orange + "/".repeat(asciiWidth + paddingWidth * 2 + 2) + reset
+    val linjeAscii = "/".repeat(asciiWidth + paddingWidth * 2 + 2).fargelegg(orange) + "\n"
+    val topSpacing = ".\n".repeat(4).fargelegg(orange)
 
-    println("\n\n")
-    println(linjeAscii)
-    println(
+    val ulvAscii =
         """
-        $orange
                                     .
                                    / V\
  ____ ____ ___ ____   _____      / `  /
@@ -31,20 +29,22 @@ fun printStartupMelding() {
                 <__________\_____)\__)
      
     HAG Utvikler Løsnings Verktøy
-        $reset
-        """.trimIndent().prependIndent(" ".repeat(paddingWidth)),
-    )
+
+        """.trimIndent().fargelegg(orange).prependIndent(" ".repeat(paddingWidth))
+
     val successTekst =
         """
+            
         ${brightCyan}Token Server $KUBE_CTL_CONTEXT_ER_ALLTID_DEV: [online]$reset    
         
         ${brightCyan}Kafka UI:$reset   http://localhost:4242/kafka
                 
         ${brightCyan}Hent token:$reset http://localhost:4242/token/hag-lps-api-client
         
-        """.trimIndent()
-    println(successTekst.prependIndent(" "))
-    println(linjeAscii)
+        
+        """.trimIndent().prependIndent(" ")
+
+    (topSpacing + linjeAscii + ulvAscii + successTekst + linjeAscii).printLinjer()
 }
 
 fun cleanServiceName(name: String): String = name.replace(Regex("^[^-]*-|(?:-[^-]*){4}$"), "")
@@ -68,3 +68,7 @@ fun giBrukerAdvarselBrukDev() {
     ProcessBuilder(command).start()
     exitProcess(0)
 }
+
+fun String.printLinjer() = lines().forEach { println(it).also { Thread.sleep(70) } }
+
+fun String.fargelegg(farge: String) = lines().joinToString("\n") { farge + it + reset }
