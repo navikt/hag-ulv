@@ -1,0 +1,88 @@
+meta {
+  name: oppdater dialog med søknad
+  type: http
+  seq: 3
+}
+
+patch {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{dialogId}}
+  body: json
+  auth: none
+}
+
+params:query {
+  : 
+}
+
+headers {
+  Content-Type: application/json-patch+json
+}
+
+body:json {
+  [
+    {
+      "op": "add",
+      "path": "/transmissions",
+      "value": [
+        {
+          "type": "Information",
+          "extendedType": "SYKEPENGESOKNAD",
+          "sender": {
+            "actorType": "ServiceOwner"
+          },
+          "content": {
+            "title": {
+              "value": [
+                {
+                  "value": "Søknad om sykepenger",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            },
+            "summary": {
+              "value": [
+                {
+                  "value": "Søknad om sykepenger",
+                  "languageCode": "nb"
+                }
+              ],
+              "mediaType": "text/plain"
+            }
+          },
+          "attachments": [
+            {
+              "displayName": [
+                {
+                  "value": "Soknad.json",
+                  "languageCode": "nb"
+                }
+              ],
+              "urls": [
+                {
+                  "url": "https://sykepenger-im-lps-api.ekstern.dev.nav.no/soknad/{{soknadId}}",
+                  "mediaType": "application/json",
+                  "consumerType": "Api"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+vars:pre-request {
+  eksempelDialogId: 0196a091-2397-701d-a653-01cf1e9e70c0
+  eksempelSoknadId: f0fe7252-3cf0-413d-a8a9-8175719309f8
+}
+
+script:pre-request {
+  if (bru.getVar("dialogId") === undefined) {
+    bru.setVar("dialogId", bru.getRequestVar("eksempelDialogId"));
+  }
+  if (bru.getVar("soknadId") === undefined) {
+    bru.setVar("soknadId", bru.getRequestVar("eksempelSoknadId"));
+  }
+}
