@@ -14,9 +14,7 @@ val successTekst =
     """
         
     ${BRIGHT_CYAN}Token Server $KUBE_CTL_CONTEXT_ER_ALLTID_DEV: [${GREEN}online$RESET]$RESET    
-    
-    ${BRIGHT_CYAN}Kafka UI:$RESET   http://localhost:4242/kafka
-            
+    ${BRIGHT_CYAN}Kafka UI:$RESET   http://localhost:4242/kafka    
     ${BRIGHT_CYAN}Hent token:$RESET http://localhost:4242/token/hag-lps-api-client
     
 
@@ -46,13 +44,14 @@ fun printStartupMelding(text: String = successTekst) {
     val paddingWidth = 11
     val asciiWidth = 39
 
-    val linjeAscii = "/".repeat(asciiWidth + paddingWidth * 2 + 2).fargelegg(ORANGE) + "\n"
+    val linjeAscii = "/".repeat(asciiWidth + paddingWidth * 2 + 2).fargelegg(ORANGE)
     val topSpacing = ".\n".repeat(4).fargelegg(ORANGE)
 
     val ulvAscii =
         """
+            
      _____  ___  _____ 
-    |  |  |/ _ \|   __|             .
+    |  |  |/ _ \|  ,__|             .
     |__|__|__|__|_____/            / V\
  ____ ____ ___ ____   _____      / `  /
 |    |    \   |    \ /    /     <<   |
@@ -92,7 +91,7 @@ fun giBrukerAdvarselBrukDev() {
     exitProcess(0)
 }
 
-fun String.printLinjer() = lines().forEach { println(it).also { Thread.sleep(50) } }
+fun String.printLinjer() = lines().forEach { println(it).also { Thread.sleep(40) } }
 
 fun String.fargelegg(farge: String) = lines().joinToString("\n") { farge + it + RESET }
 
