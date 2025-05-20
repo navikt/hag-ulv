@@ -36,8 +36,15 @@ fun lagLokalFil(
 suspend fun PipelineContext<Unit, ApplicationCall>.handleKafkaUiResponse() {
     try {
         val serviceNavn = call.parameters["service-navn"] ?: throw BadRequestException("Mangler parameter")
-        println("MOTATT REQUEST >$serviceNavn<")
+        println("Motatt request for tjeneste: $serviceNavn")
         val secret = TokenService(SecretType.Aiven).hentSecret(serviceNavn = serviceNavn)
+
+        if (!daemonIsRunning()) {
+            println("Docker daemon er ikke tilgjengelig. Kan ikke starte Kafka UI.")
+            val html = "<div>Docker daemon er ikke tilgjengelig. Skru på (colima start) og prøv på nytt.</div>"
+            call.respondText(kafkaHtmlSide(html), ContentType.Text.Html)
+            return
+        }
 
         val imageErInstallert = imageEksisterer(DOCKER_IMAGE)
         println("Image installert: $imageErInstallert")

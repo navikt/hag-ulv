@@ -15,8 +15,8 @@ object DockerManager {
     }
 
     fun startContainer(cmd: List<String>): String {
-        println("LAGER KONTAINER")
-        println(cmd.joinToString("\n"))
+        println("Lager docker container med kommando: ")
+        println(cmd.joinToString(" "))
         stopContainer(containerId)
 
         val process = ProcessBuilder(cmd).start()
@@ -29,6 +29,8 @@ object DockerManager {
         if (containerId.isNullOrBlank()) {
             throw RuntimeException("Feilet å hente container ID")
         }
+
+        streamDockerLogs(containerId)
 
         no.nav.helsearbeidsgiver.containerId = containerId
         return containerId
@@ -55,4 +57,30 @@ fun imageEksisterer(imageNavn: String): Boolean {
             .redirectError(ProcessBuilder.Redirect.DISCARD)
             .start()
     return process.waitFor() == 0
+}
+
+fun daemonIsRunning(): Boolean {
+    val process =
+        ProcessBuilder("docker", "info")
+            .redirectOutput(ProcessBuilder.Redirect.DISCARD)
+            .redirectError(ProcessBuilder.Redirect.DISCARD)
+            .start()
+    return process.waitFor() == 0
+}
+
+fun streamDockerLogs(containerId: String) {
+    val process =
+        ProcessBuilder("docker", "logs", "-f", containerId)
+            .apply {
+                redirectErrorStream(true) // Merge stderr into stdout
+            }.start()
+
+    Thread {
+        process.inputStream.bufferedReader().use { reader ->
+            while (true) {
+                val line = reader.readLine() ?: break
+                println("[Docker] $line")
+            }
+        }
+    }.start()
 }

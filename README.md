@@ -12,7 +12,7 @@ ULV (Utvikler Løsnings Verktøy) er et sett med verktøy for å forenkle testin
 ## Kom i gang
 Login i gcp om du ikke er logget inn fra før:
 ```bash
-nais login
+gcloud auth login
 ```
 Start ULV:
 ```bash

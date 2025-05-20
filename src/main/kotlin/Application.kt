@@ -22,12 +22,22 @@ fun Application.module() {
         exitProcess(0)
     }
 
+    val portErBrukt = erPortBrukt(environment.config.property("ktor.deployment.port").getString())
+
     configureRouting()
 
     environment.monitor.subscribe(ApplicationStarted) {
         GlobalScope.launch {
             delay(1000)
-            printStartupMelding()
+            if (portErBrukt) {
+                printStartupMelding(portBruktErrorTekst)
+                exitProcess(0)
+            } else if (!gcloudErAutentisert()) {
+                printStartupMelding(gcloudErrorTekst)
+                exitProcess(0)
+            } else {
+                printStartupMelding(successTekst)
+            }
         }
     }
 }
