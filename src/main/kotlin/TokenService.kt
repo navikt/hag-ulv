@@ -25,19 +25,28 @@ class TokenService(
 ) {
     fun hentTokenResponse(
         serviceNavn: String,
-        parameter: String?,
+        parameter: String? = null,
     ): TokenResponse {
-        val cachedSecret = SecretsCache.getValue(secretType, serviceNavn)
-
-        val secret = cachedSecret ?: this.hentSecret(serviceNavn)
+        val (secret, secretErCached) = hentSecretMedCache(serviceNavn)
 
         val token = this.hentToken(secret, parameter)
 
         return TokenResponse(
             token = token,
-            secretErCached = cachedSecret != null,
+            secretErCached = secretErCached,
         )
     }
+
+    private fun hentSecretMedCache(serviceNavn: String): Pair<KubeSecret, Boolean> {
+        val cachedSecret = SecretsCache.getValue(secretType, serviceNavn)
+
+        val secret = cachedSecret ?: this.hentNySecret(serviceNavn)
+
+        val secretErCached = cachedSecret != null
+        return Pair(secret, secretErCached)
+    }
+
+    fun hentSecret(serviceNavn: String): KubeSecret = hentSecretMedCache(serviceNavn).first
 
     private fun hentToken(
         secret: KubeSecret,
@@ -51,7 +60,7 @@ class TokenService(
             else -> throw NotImplementedError("Har ikke implementert den type secret ${secretType.name}")
         }
 
-    private fun hentSecret(serviceNavn: String): KubeSecret {
+    private fun hentNySecret(serviceNavn: String): KubeSecret {
         val kubeCtlClient = KubeCtlClient
 
         val navnListe = kubeCtlClient.getServices(secretType)

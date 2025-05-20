@@ -7,8 +7,13 @@ import java.io.File
 import java.io.FileReader
 import java.util.*
 
-// OBS! VÆR FORSIKTIG MED Å ENDRE DENNE VARIABELEN
-val KUBE_CTL_CONTEXT = "dev-gcp"
+// MÅ ALLTID VÆRE DEV-GCP
+// MÅ ALLTID VÆRE DEV-GCP
+// MÅ ALLTID VÆRE DEV-GCP
+val KUBE_CTL_CONTEXT_ER_ALLTID_DEV = "dev-gcp"
+// MÅ ALLTID VÆRE DEV-GCP
+// MÅ ALLTID VÆRE DEV-GCP
+// MÅ ALLTID VÆRE DEV-GCP
 
 fun hentDevGcpKubeConfig(): ApiClient {
     val kubeConfigFile = findConfigInHomeDir() ?: throw Exception("KubeConfigFile ikke funnet")
@@ -16,8 +21,8 @@ fun hentDevGcpKubeConfig(): ApiClient {
     val reader = FileReader(kubeConfigFile)
     val kubeConfig = KubeConfig.loadKubeConfig(reader)
 
-    kubeConfig.setContext(KUBE_CTL_CONTEXT)
-    println("KubeCtl kontekst er satt til: $KUBE_CTL_CONTEXT")
+    kubeConfig.setContext(KUBE_CTL_CONTEXT_ER_ALLTID_DEV)
+    println("KubeCtl kontekst er satt til: $KUBE_CTL_CONTEXT_ER_ALLTID_DEV")
 
     val apiClient = Config.fromConfig(kubeConfig)
     return apiClient

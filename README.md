@@ -1,30 +1,26 @@
-### HAG - Helse Arbeidsgiver
-_________
-# Token server + HTTP kataloger
 
-En maskinporten token server og katalog av HTTP requests som automatisk henter tokens.   
-Bruker din lokal `kubectl` instans, husk derfor å være pålogget med  `gcloud auth login`.  
-Designet for testing i dev miljø og bruker automatisk dev-gcp context.
+# HAG ULV
+
+![](readme/ulv-ascii.png)
+
+ULV (Utvikler Løsnings Verktøy) er et sett med verktøy for å forenkle testing lokalt.
+
+- **Kafka-UI:** Observability i Kafka topics og meldinger samt produsere meldinger for testing use cases.
+- **Bruno:** Delt kataloger (som Postman) for HTTP kall med automatisert autentisering.
 
 
-![](readme/token-server-diagram.png)
-
-## Komme i gang
-
-### Start severen
-
-`./release/bin/start` eller `gradle run`
-
-### Hent en token
-http://localhost:4242/token/sykepenger-im-lps-api  
-
-### Sikker commits
-Kjør `gradle safe-commit` for å sette opp **git** til å aldri inkludere JWT tokens i prosjektet.  
-*(Anbefales om du skal gjøre endringer i Bruno kataloger)*
-
-## Test med autentisert CURL
-Les en dialog fra Dialogporten med id `0194bc95-97b4-7240-961f-9663743d4518` med token for `sykepenger-im-lps-api`
+## Kom i gang
+Login i gcp om du ikke er logget inn fra før:
+```bash
+gcloud auth login
 ```
+Start ULV:
+```bash
+gradle run
+```
+
+Test med CURL ved å lese dialog i Altinn 3 med id `0194bc95-97b4-7240-961f-9663743d4518` og token for `sykepenger-im-lps-api`
+```bash
 curl -X 'GET' \
 'https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/0194bc95-97b4-7240-961f-9663743d4518' \
 -H 'accept: application/json' \
@@ -32,17 +28,26 @@ curl -X 'GET' \
 | jq
 ```
 
-## Autentisert Bruno Katalog
+## Sette opp Bruno
 
-Disse HTTP katalogene henter automatisk nye tokens for requests ved bruk av pre-request scripts [(bruno eksempel)](./readme/bruno-prescript-eksempel.png).
+Bruno er et open source alternativ til Postman som er designet for å dele innhold med team i git repo. 
 
+Alle HTTP kall for Bruno befinner seg i `kataloger` mappen.
 
-```
+Når du gjør endringer i Bruno oppdateres automatisk filene i mappen.
+
+Katalogene bruker ULV for å automatisk hente tokens ved bruk av pre-request scripts [(bruno eksempel)](./readme/bruno-prescript-eksempel.png).
+
+Mac installasjon:
+
+```bash
 brew install bruno && open /Applications/Bruno.app
 ```
 
+### Hvordan å laste inn Bruno kataloger:
+
 ```
-Øverst til venstre  Apple meny: Bruno > Open Collection > hag-token-HTTP-katalog/kataloger/dialogporten
+Øverst til venstre  Apple meny: Bruno > Open Collection > hag-ulv/kataloger/dialogporten
 ```
 
 ![bruno eksempel](./readme/bruno-open-collection.png)
@@ -66,25 +71,13 @@ En Postman json demo er inkludert med et enkelt eksempel på hvordan å sette op
 
 Mac menu bar: `File` > `Import Collection` > `hag-api-testing-katalog/kataloger/postman.json`
 
-## Autentisert Swagger
-
-Øverst på siden settes lenke til swagger.json url og hvilken intern tjeneste tokens hentes fra.
-
-
-Tokens blir automatisk lagt til i header `Authorization: Bearer [token]` på alle HTTP kall på siden.
-
-
-Lenke: **http://localhost:4242/swagger**
-
-[![](readme/swagger-eksempel.png)](http://localhost:4242/swagger)
-
 ## Endepunkter
 
 Koden for endepunktene ligger i [./src/main/kotlin/Routing.kt](./src/main/kotlin/Routing.kt)
 
 ## Hvordan fungerer serveren?
 
-Serveren bruker lokalt konfigurert kubectl config .
+Serveren bruker lokalt konfigurert kubectl config som er alltid satt til dev-gcp.
 
 **Route: `http://localhost:4242/token/{tjeneste-navn}`**
 

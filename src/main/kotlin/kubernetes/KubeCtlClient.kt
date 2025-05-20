@@ -7,10 +7,13 @@ import no.nav.helsearbeidsgiver.SecretType
 import no.nav.helsearbeidsgiver.SecretsCache
 import java.util.*
 
-typealias KubeSecret = Map<String, String>
+typealias KubeSecret = Map<String, ByteArray>
 
-fun Map<String, String>.value(key: String): String =
-    this[key] ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: ${key}\nFor kubectl json response: $this")
+fun Map<String, ByteArray>.value(key: String): String =
+    this[key]?.decodeToString() ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: $key")
+
+fun Map<String, ByteArray>.rawBytevalue(key: String): ByteArray =
+    this[key] ?: throw RuntimeException("Feil ved parsing, mangler nøkkel: $key")
 
 fun SecretType.getNameString() =
     when (this) {
@@ -63,7 +66,7 @@ object KubeCtlClient {
                     "helsearbeidsgiver",
                     null,
                 )
-            val secret = response.data?.mapValues { it.value.decodeToString() } ?: throw RuntimeException("No data found in secret")
+            val secret = response.data?.mapValues { it.value } ?: throw RuntimeException("No data found in secret")
             SecretsCache.setValue(serviceName, secret)
             return secret
         } catch (e: Exception) {
