@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    if (KUBE_CTL_CONTEXT_ER_ALLTID_DEV != listOf('d', 'e', 'v', '-', 'g', 'c', 'p').joinToString("")) {
+    if (KUBE_CTL_CONTEXT_ER_ALLTID_DEV != "dev-gcp") {
         giBrukerAdvarselBrukDev()
         exitProcess(0)
     }
