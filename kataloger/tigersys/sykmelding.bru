@@ -1,17 +1,17 @@
 meta {
   name: sykmelding
   type: http
-  seq: 9
+  seq: 12
 }
 
 get {
-  url: https://sykepenger-im-lps-api.ekstern.dev.nav.no/v1/sykmelding/{{id}}
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmelding/{{id}}
   body: none
   auth: bearer
 }
 
 auth:bearer {
-  token: 
+  token:
 }
 
 vars:pre-request {
@@ -25,7 +25,7 @@ script:pre-request {
   const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311567470', {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   });
-  
+
   const token = responseSystembruker.data.tokenResponse.access_token;
   req.setHeader('Authorization', "Bearer "+ token);
 }
