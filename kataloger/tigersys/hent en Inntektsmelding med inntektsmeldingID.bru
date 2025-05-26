@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/e3aec1eb-3b85-4871-a332-e0a9d10d787d
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/5e4c4131-63ad-46a6-a888-fda568dd1113
   body: none
   auth: none
 }
@@ -16,6 +16,6 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-
+  
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
