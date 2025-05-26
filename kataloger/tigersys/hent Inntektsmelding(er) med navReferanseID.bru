@@ -1,11 +1,11 @@
 meta {
-  name: hent alle inntektsmeldinger
+  name: hent Inntektsmelding(er) med navReferanseID
   type: http
-  seq: 1
+  seq: 2
 }
 
 get {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmeldinger
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/navReferanseId/0dd58a63-3cf4-47fc-a843-5f5d75230a29
   body: none
   auth: none
 }
@@ -16,6 +16,6 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-
+  
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
