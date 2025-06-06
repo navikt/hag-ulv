@@ -1,7 +1,7 @@
 meta {
   name: sykmelding
   type: http
-  seq: 12
+  seq: 14
 }
 
 get {
@@ -11,21 +11,21 @@ get {
 }
 
 auth:bearer {
-  token:
+  token: 
 }
 
 vars:pre-request {
-  orgnr: 311567470
-  id: 0a380626-8856-4a8a-9960-97d00cb1041e
-  ~scopes: nav:helse/im.read
+  scopes: nav:helseytelser/sykepenger
+  orgnr: 311910663
+  id: f041b9ef-d16c-498e-a715-aae21ed138bf
 }
 
 script:pre-request {
   const http = require('axios');
-  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311567470', {
+  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311910663', {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   });
-
+  
   const token = responseSystembruker.data.tokenResponse.access_token;
   req.setHeader('Authorization', "Bearer "+ token);
 }
