@@ -13,22 +13,19 @@ for file in $files; do
     continue
   fi
 
-  # Check if file exists (it might have been deleted)
-  if [ -f "$file" ]; then
-    # Look for the substring "eyJ" and get the matching lines
-    while IFS= read -r line_content; do
-      if [[ "$line_content" == *"eyJ"* ]]; then
-        # Get line number
-        line_number=$(grep -n "$line_content" "$file" | cut -d: -f1)
+    # Look for the substring "eyJ" (ignore deleted files) and get the matching lines
+    # Get line number
+    line=$(grep -ns eyJ "$file")
+    line_number=$(echo "$line" | cut -d: -f1)
+    if [[ "$line_number" > 0 ]]; then
+        line_content=$(echo "$line" | cut -d: -f2-)
         # Print error message in bold red text with the line content
         echo -e "\033[1;31mFant mulig token i $file (linje $line_number):\033[0m"
         echo -e "\033[1;31m$line_content\033[0m"
         echo -e "\033[1;31mSlett denne for å gjennomføre commit\033[0m"
         echo ""
         found_token=true
-      fi
-    done < <(grep "eyJhb" "$file")
-  fi
+    fi
 done
 
 # If we found any tokens, exit with a non-zero status to prevent the commit
