@@ -1,24 +1,17 @@
 meta {
-  name: sykmeldinger filter
+  name: søknader
   type: http
-  seq: 18
+  seq: 19
 }
 
-post {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmeldinger
-  body: json
+get {
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknader
+  body: none
   auth: bearer
 }
 
 auth:bearer {
   token: 
-}
-
-body:json {
-  {
-    "fnr": "01417306761",
-    "fom": "2025-05-23"
-  }
 }
 
 script:pre-request {
