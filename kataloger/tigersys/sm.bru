@@ -1,7 +1,7 @@
 meta {
   name: sykmeldinger
   type: http
-  seq: 13
+  seq: 16
 }
 
 get {
@@ -11,21 +11,15 @@ get {
 }
 
 auth:bearer {
-  token:
-}
-
-vars:pre-request {
-  orgnr: 311910663
-  id: f041b9ef-d16c-498e-a715-aae21ed138bf
-  ~scopes: nav:helseytelser/sykepenger
+  token: 
 }
 
 script:pre-request {
   const http = require('axios');
-  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311910663', {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  });
-
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  req.setHeader('Authorization', "Bearer "+ token);
+  let response = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+  )
+  
+  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
