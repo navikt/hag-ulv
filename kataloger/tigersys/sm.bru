@@ -22,10 +22,10 @@ vars:pre-request {
 
 script:pre-request {
   const http = require('axios');
-  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311910663', {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  });
+  let response = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+  )
 
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  req.setHeader('Authorization', "Bearer "+ token);
+  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
