@@ -6,7 +6,8 @@
 ULV (Utvikler Løsnings Verktøy) er et sett med verktøy for å forenkle testing lokalt.
 
 - **Kafka-UI:** Observability i Kafka topics og meldinger samt produsere meldinger for testing use cases.
-- **Bruno:** Delt kataloger (som Postman) for HTTP kall med automatisert autentisering.
+- **Bruno:** Delt kataloger (som Postman) for HTTP kall (med automatisert autentisering).
+- **Token server:** Lokal server som bruker KubeCTL for å hente forskjellige tokens i dev-gcp. 
 
 
 ## Kom i gang
@@ -28,31 +29,24 @@ curl -X 'GET' \
 | jq
 ```
 
-## Sette opp Bruno
+## Bruno
+Open source alternativ til Postman. Deler innhold med team i git repo.
 
-Bruno er et open source alternativ til Postman som er designet for å dele innhold med team i git repo. 
 
-Alle HTTP kall for Bruno befinner seg i `kataloger` mappen.
-
-Når du gjør endringer i Bruno oppdateres automatisk filene i mappen.
-
-Katalogene bruker ULV for å automatisk hente tokens ved bruk av pre-request scripts [(bruno eksempel)](./readme/bruno-prescript-eksempel.png).
-
-Mac installasjon:
 
 ```bash
-brew install bruno && open /Applications/Bruno.app
+brew install bruno
 ```
 
-### Hvordan å laste inn Bruno kataloger:
+Last inn hag-ulv collection:
 
-```
-Øverst til venstre  Apple meny: Bruno > Open Collection > hag-ulv/kataloger/dialogporten
-```
+[<img src="https://fetch.usebruno.com/button.svg" alt="Fetch in Bruno" style="width: 130px; height: 30px;" width="128" height="32">](https://fetch.usebruno.com?url=https%3A%2F%2Fgithub.com%2Fnavikt%2Fhag-ulv.git "target=_blank rel=noopener noreferrer")
 
-![bruno eksempel](./readme/bruno-open-collection.png)
 
-![bruno eksempel](./readme/bruno-open-collection-folder.png)
+
+### Hvordan fungerer dette?
+
+Alle HTTP kall for Bruno befinner seg i `kataloger` mappen. Når du gjør endringer i Bruno oppdateres automatisk filene i mappen.
 
 Variabler er satt i `vars` vinduet og kan brukes i URL og i pre-request scripts.
 
@@ -63,7 +57,7 @@ Scripts er satt i `pre-request` vinduet. Denne henter tokens automatisk.
 (kan defineres for hele katalogen eller for enkelt requests)
 
 
-<img src="./readme/bruno-pre-request-script.png" alt="Bruno eksempel" width="500" />
+<img src="./readme/bruno-prescript-eksempel.png" alt="Bruno eksempel" width="500" />
 
 
 ### (Postman)
