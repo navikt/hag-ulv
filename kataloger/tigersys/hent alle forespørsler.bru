@@ -1,7 +1,7 @@
 meta {
   name: hent alle forespørsler
   type: http
-  seq: 5
+  seq: 8
 }
 
 get {
@@ -12,7 +12,7 @@ get {
 
 script:pre-request {
   const http = require('axios');
-  let response = await http.post(
+  const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )

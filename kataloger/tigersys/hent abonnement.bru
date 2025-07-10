@@ -1,7 +1,7 @@
 meta {
   name: hent abonnement
   type: http
-  seq: 8
+  seq: 12
 }
 
 get {
@@ -21,9 +21,9 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
   )
-  
+
   const token = responseSystembruker.data.tokenResponse.access_token;
-  
+
   const responseAltinn = await http.get(
     'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
     {
@@ -32,6 +32,6 @@ script:pre-request {
       }
     }
   );
-  
+
   req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
 }

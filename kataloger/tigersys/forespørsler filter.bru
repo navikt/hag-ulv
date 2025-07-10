@@ -16,13 +16,13 @@ auth:bearer {
 
 body:json {
   {
-    "fom": "2025-06-02"
+    "orgnr": "311368095"
   }
 }
 
 script:pre-request {
   const http = require('axios');
-  let response = await http.post(
+  const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )

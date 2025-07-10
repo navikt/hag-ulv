@@ -16,13 +16,12 @@ auth:bearer {
 
 vars:pre-request {
   scopes: nav:helseytelser/sykepenger
-  orgnr: 311910663
-  id: f041b9ef-d16c-498e-a715-aae21ed138bf
+  id: 9a8974ec-93cc-4d93-8cc7-3d9f5b86e903
 }
 
 script:pre-request {
   const http = require('axios');
-  let response = await http.post(
+  const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
