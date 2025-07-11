@@ -1,7 +1,7 @@
 meta {
   name: send inn inntektsmelding
   type: http
-  seq: 4
+  seq: 7
 }
 
 post {
@@ -47,10 +47,10 @@ body:json {
 
 script:pre-request {
   const http = require('axios');
-  let response = await http.post(
+  const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-  
+
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }

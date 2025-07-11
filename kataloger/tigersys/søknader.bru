@@ -1,13 +1,17 @@
 meta {
-  name: hent Inntektsmelding(er) med navReferanseID
+  name: søknader
   type: http
-  seq: 3
+  seq: 19
 }
 
 get {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/navReferanseId/0dd58a63-3cf4-47fc-a843-5f5d75230a29
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknader
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token:
 }
 
 script:pre-request {

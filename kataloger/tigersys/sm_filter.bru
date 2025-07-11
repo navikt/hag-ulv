@@ -1,7 +1,7 @@
 meta {
   name: sykmeldinger filter
   type: http
-  seq: 14
+  seq: 18
 }
 
 post {
@@ -11,28 +11,22 @@ post {
 }
 
 auth:bearer {
-  token:
+  token: 
 }
 
 body:json {
   {
-    "fnr": "01417306761",
+    "fnr": "14498527206",
     "fom": "2025-05-23"
   }
 }
 
-vars:pre-request {
-  orgnr: 311910663
-  id: f041b9ef-d16c-498e-a715-aae21ed138bf
-  ~scopes: nav:helseytelser/sykepenger
-}
-
 script:pre-request {
   const http = require('axios');
-  const responseSystembruker = await http.post('https://hag-lps-api-client.ekstern.dev.nav.no/systembruker', 'orgnr=311910663', {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  });
-
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  req.setHeader('Authorization', "Bearer "+ token);
+  const response = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+  )
+  
+  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
