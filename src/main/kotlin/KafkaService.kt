@@ -18,6 +18,8 @@ const val DOCKER_KEYSTORE_PATH = "/tmp/client.keystore.p12"
 const val DOCKER_TRUSTSTORE_PATH = "/tmp/client.truststore.jks"
 const val DOCKER_CONFIG_PATH = "/tmp/config.yml"
 
+const val DOCKER_PORT = "4243"
+
 fun lagLokalFil(
     navn: String,
     data: ByteArray,
@@ -76,12 +78,11 @@ fun startKafkaUi(secret: KubeSecret) {
 
     val cmd: List<String> =
         listOf(
-            "docker run -d -it -p 8080:8080".split(" "),
+            "docker run -d -it -p 8080:$DOCKER_PORT --platform linux/amd64 --name kafka-ui".split(" "),
             listOf("-v", "$keystorePath:$DOCKER_KEYSTORE_PATH:ro"),
             listOf("-v", "$truststorePath:$DOCKER_TRUSTSTORE_PATH:ro"),
             listOf("-v", "$configPath:$DOCKER_CONFIG_PATH"),
             listOf("-e", "spring.config.additional-location=$DOCKER_CONFIG_PATH"),
-            listOf("-e", "JAVA_TOOL_OPTIONS:\"-XX:UseSVE=0\""),
             listOf(DOCKER_IMAGE),
         ).flatten()
 
@@ -119,7 +120,7 @@ fun htmlVelg(servicer: List<String>) =
                 </ul>
     """.trimIndent()
 
-fun String?.tilKafkaUiUrl(): String = "http://localhost:8080/ui/clusters/kafka-ui/all-topics/$this/messages?limit=100&mode=LATEST"
+fun String?.tilKafkaUiUrl(): String = "http://localhost:$DOCKER_PORT/ui/clusters/kafka-ui/all-topics/$this/messages?limit=100&mode=LATEST"
 
 fun htmlLoading(
     serviceNavn: String,
@@ -130,7 +131,7 @@ fun htmlLoading(
         when {
             serviceNavn.contains("lps-api") -> "teamsykmelding.syfo-sendt-sykmelding".tilKafkaUiUrl()
             serviceNavn.startsWith("im") -> "helsearbeidsgiver.rapid".tilKafkaUiUrl()
-            else -> "http://localhost:8080/ui/clusters/kafka-ui/all-topics?perPage=25&q=helsearbeidsgiver"
+            else -> "http://localhost:$DOCKER_PORT/ui/clusters/kafka-ui/all-topics?perPage=25&q=helsearbeidsgiver"
         }
     return """
         <div>Starter Kafka UI med rettigheter for <strong>$serviceNavn</strong></div>

@@ -1,8 +1,5 @@
 package no.nav.helsearbeidsgiver
 
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
 var containerId: String? = null
 
 object DockerManager {
@@ -22,11 +19,9 @@ object DockerManager {
         val process = ProcessBuilder(cmd).start()
         process.waitFor()
 
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val containerId = reader.readLine()?.trim()
-        reader.close()
+        val containerId = hentContainerId()
 
-        if (containerId.isNullOrBlank()) {
+        if (containerId.isBlank()) {
             throw RuntimeException("Feilet å hente container ID")
         }
 
@@ -84,3 +79,11 @@ fun streamDockerLogs(containerId: String) {
         }
     }.start()
 }
+
+fun hentContainerId(): String =
+    ProcessBuilder("docker", "inspect", "--format={{.Id}}", "kafka-ui")
+        .start()
+        .inputStream
+        .bufferedReader()
+        .readText()
+        .trim()
