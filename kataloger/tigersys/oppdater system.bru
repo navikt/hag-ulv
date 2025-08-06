@@ -1,0 +1,82 @@
+meta {
+  name: oppdater system
+  type: http
+  seq: 14
+}
+
+put {
+  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/315339138_tigersys3
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "id": "315339138_tigersys3",
+    "vendor": {
+      "id": "0192:315339138"
+    },
+    "name": {
+      "en": "Tigersys 3",
+      "nb": "Tigersys 3",
+      "nn": "Tigersys 3"
+    },
+    "description": {
+      "en": "Tigersys is good stuff",
+      "nb": "Tigersys er bra",
+      "nn": "Tigersys er morosamt"
+    },
+    "rights": [
+      {
+        "action": "read",
+        "resource": [
+          {
+            "value": "nav_sykepenger_dialogporten",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_system_sykepenger_inntektsmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_system_sykepenger_sykmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_system_sykepenger_soknad",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      }
+    ],
+    "allowedRedirectUrls": [ "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen" ],
+    "clientId": [ "" ]
+  }
+}
+
+vars:pre-request {
+  scopes: altinn:authentication/systemregister.write
+}
+
+docs {
+  For å registrere et nytt system trengs et rent maskinporten-token med scopet altinn:authentication/systemregister.write som man veksler inn til et Altinn-token.
+}
