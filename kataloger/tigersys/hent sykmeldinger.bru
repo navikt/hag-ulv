@@ -1,5 +1,5 @@
 meta {
-  name: sykmeldinger filter
+  name: hent sykmeldinger
   type: http
   seq: 18
 }
@@ -7,17 +7,15 @@ meta {
 post {
   url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmeldinger
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: 
+  auth: none
 }
 
 body:json {
   {
-    "fnr": "14498527206",
-    "fom": "2025-05-23"
+    "orgnr": "315912784",
+    "fnr": null,
+    "tom": null,
+    "fom": null
   }
 }
 

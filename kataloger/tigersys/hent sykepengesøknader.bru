@@ -1,29 +1,27 @@
 meta {
-  name: inntektsmeldinger filter
+  name: hent sykepengesøknader
   type: http
-  seq: 6
+  seq: 22
 }
 
 post {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmeldinger
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknader
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: 
+  auth: none
 }
 
 body:json {
   {
-    "tom": "2025-06-04",
-    "fom": "2025-06-04"
+    "orgnr": "315912784",
+    "fnr": null,
+    "tom": null,
+    "fom": null
   }
 }
 
 script:pre-request {
   const http = require('axios');
-  let response = await http.post(
+  const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
