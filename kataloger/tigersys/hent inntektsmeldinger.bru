@@ -1,5 +1,5 @@
 meta {
-  name: inntektsmeldinger filter
+  name: hent inntektsmeldinger
   type: http
   seq: 6
 }
@@ -16,8 +16,13 @@ auth:bearer {
 
 body:json {
   {
-    "tom": "2025-06-04",
-    "fom": "2025-06-04"
+    "orgnr": "315912784",
+    "innsendingId": null,
+    "fnr": null,
+    "navReferanseId": null,
+    "tom": null,
+    "fom": null,
+    "status": null
   }
 }
 

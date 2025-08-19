@@ -1,11 +1,11 @@
 meta {
-  name: sykmeldinger filter
+  name: hent sykepengesøknader
   type: http
-  seq: 18
+  seq: 22
 }
 
 post {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmeldinger
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknader
   body: json
   auth: bearer
 }
@@ -16,8 +16,10 @@ auth:bearer {
 
 body:json {
   {
-    "fnr": "14498527206",
-    "fom": "2025-05-23"
+    "orgnr": "315912784",
+    "fnr": null,
+    "tom": null,
+    "fom": null
   }
 }
 
