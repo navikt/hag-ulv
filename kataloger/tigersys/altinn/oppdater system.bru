@@ -1,17 +1,13 @@
 meta {
-  name: oppdater tigersys i systemregisteret Altinn
+  name: oppdater system
   type: http
-  seq: 14
+  seq: 3
 }
 
 put {
   url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/315339138_tigersys3
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: 
+  auth: inherit
 }
 
 body:json {

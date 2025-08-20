@@ -1,17 +1,13 @@
 meta {
   name: registrer system
   type: http
-  seq: 8
+  seq: 2
 }
 
 post {
   url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: 
+  auth: inherit
 }
 
 body:json {

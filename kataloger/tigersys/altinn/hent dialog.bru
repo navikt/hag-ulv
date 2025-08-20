@@ -1,13 +1,13 @@
 meta {
   name: hent dialog
   type: http
-  seq: 6
+  seq: 7
 }
 
 get {
   url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs/{{dialogId}}
   body: none
-  auth: none
+  auth: inherit
 }
 
 headers {

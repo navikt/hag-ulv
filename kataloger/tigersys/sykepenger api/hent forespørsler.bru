@@ -1,28 +1,29 @@
 meta {
-  name: forespørsler filter
+  name: hent forespørsler
   type: http
-  seq: 9
+  seq: 2
 }
 
 post {
   url: https://sykepenger-api.ekstern.dev.nav.no/v1/forespoersler
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: 
+  auth: none
 }
 
 body:json {
   {
-    "orgnr": "311368095"
+    "orgnr": "315912784",
+    "fnr": null,
+    "navReferanseId": null,
+    "tom": null,
+    "fom": null,
+    "status": null
   }
 }
 
 script:pre-request {
   const http = require('axios');
-  const response = await http.post(
+  let response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )

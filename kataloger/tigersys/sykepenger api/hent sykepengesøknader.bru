@@ -1,17 +1,22 @@
 meta {
-  name: sykmeldinger
+  name: hent sykepengesøknader
   type: http
-  seq: 16
+  seq: 2
 }
 
-get {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmeldinger
-  body: none
-  auth: bearer
+post {
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknader
+  body: json
+  auth: none
 }
 
-auth:bearer {
-  token:
+body:json {
+  {
+    "orgnr": "315912784",
+    "fnr": null,
+    "tom": null,
+    "fom": null
+  }
 }
 
 script:pre-request {
@@ -20,6 +25,6 @@ script:pre-request {
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
     'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
   )
-
+  
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
 }
