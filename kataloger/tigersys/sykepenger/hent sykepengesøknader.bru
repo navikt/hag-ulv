@@ -1,7 +1,7 @@
 meta {
   name: hent sykepengesøknader
   type: http
-  seq: 22
+  seq: 4
 }
 
 post {
@@ -12,7 +12,7 @@ post {
 
 body:json {
   {
-    "orgnr": "315912784",
+    "orgnr": "{{tigersyskundeOrgnrUnderenhet}}",
     "fnr": null,
     "tom": null,
     "fom": null
@@ -23,7 +23,7 @@ script:pre-request {
   const http = require('axios');
   const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet")
   )
   
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);

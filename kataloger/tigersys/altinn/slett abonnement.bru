@@ -1,17 +1,17 @@
 meta {
-  name: hent abonnement
+  name: slett abonnement
   type: http
-  seq: 12
+  seq: 6
 }
 
-get {
+delete {
   url: https://platform.tt02.altinn.no/events/api/v1/subscriptions/{{subscriptionId}}
   body: none
   auth: none
 }
 
 vars:pre-request {
-  subscriptionId: 64314
+  subscriptionId: 64018
   scopes: altinn:events.subscribe
 }
 
@@ -19,7 +19,7 @@ script:pre-request {
   const http = require('axios');
   const responseSystembruker = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
   )
 
   const token = responseSystembruker.data.tokenResponse.access_token;

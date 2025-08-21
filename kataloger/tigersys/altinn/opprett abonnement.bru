@@ -1,7 +1,7 @@
 meta {
   name: opprett abonnement
   type: http
-  seq: 11
+  seq: 4
 }
 
 post {
@@ -26,7 +26,7 @@ script:pre-request {
   const http = require('axios');
   const responseSystembruker = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr") + '&' + 'scopes=' + bru.getRequestVar("scopes")
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
   )
 
   const token = responseSystembruker.data.tokenResponse.access_token;

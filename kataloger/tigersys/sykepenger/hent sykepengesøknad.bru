@@ -1,20 +1,24 @@
 meta {
-  name: hent Inntektsmelding(er) med navReferanseID
+  name: hent sykepengesøknad
   type: http
   seq: 3
 }
 
 get {
-  url: https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/navReferanseId/0dd58a63-3cf4-47fc-a843-5f5d75230a29
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykepengesoeknad/{{id}}
   body: none
   auth: none
+}
+
+vars:pre-request {
+  id: f0bb7352-485d-3974-a0c4-deb695813383
 }
 
 script:pre-request {
   const http = require('axios');
   const response = await http.post(
     'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnr")
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet")
   )
 
   req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
