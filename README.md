@@ -19,6 +19,10 @@ Start ULV:
 ```bash
 gradle run
 ```
+alternativt
+```bash
+./gradlew run
+```
 
 Test med CURL ved å lese dialog i Altinn 3 med id `0194bc95-97b4-7240-961f-9663743d4518` og token for `sykepenger-im-lps-api`
 ```bash
