@@ -1,16 +1,18 @@
 meta {
-  name: hent dialog
+  name: hent dialoger med tidsfilter
   type: http
-  seq: 7
+  seq: 8
 }
 
 get {
-  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs/01973ed9-0a2c-7319-80b4-78546b1786b6
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs?party=urn:altinn:organization:identifier-no:315912784&updatedAfter=2025-06-20T05:02:41Z
   body: none
   auth: none
 }
 
 params:query {
+  party: urn:altinn:organization:identifier-no:315912784
+  updatedAfter: 2025-06-20T05:02:41Z
   ~serviceResource: nav_sykepenger_dialogporten
 }
 
@@ -20,7 +22,6 @@ headers {
 
 vars:pre-request {
   scopes: digdir:dialogporten
-  dialogId: 0196c429-124f-75c5-a7e7-61735a9ca051
 }
 
 script:pre-request {
