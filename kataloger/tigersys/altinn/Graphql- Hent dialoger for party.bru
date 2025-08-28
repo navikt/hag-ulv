@@ -1,0 +1,85 @@
+meta {
+  name: graphql: hent dialoger for organisasjon
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: https://platform.tt02.altinn.no/dialogporten/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query GetDialogsForParty($partyId: String!) {
+    searchDialogs(input: { party: [$partyId] }) {
+      items {
+        id
+        org
+        serviceResource
+        party
+        status
+        content {
+          title {
+            value {
+              value
+              languageCode
+            }
+            mediaType
+          }
+          summary {
+            value {
+              value
+              languageCode
+            }
+            mediaType
+          }
+        }
+        createdAt
+        updatedAt
+      }
+      hasNextPage
+      continuationToken
+      errors {
+        message
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "partyId": "urn:altinn:organization:identifier-no:315912784"
+  }
+  
+}
+
+vars:pre-request {
+  scopes: digdir:dialogporten
+}
+
+script:pre-request {
+  const http = require('axios');
+  const responseSystembruker = await http.post(
+    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
+    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
+  )
+  
+  const token = responseSystembruker.data.tokenResponse.access_token;
+  
+  const responseAltinn = await http.get(
+    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+  
+  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+}
+
+settings {
+  encodeUrl: true
+}
