@@ -12,9 +12,7 @@ post {
 
 body:graphql {
   query GetDialogsForParty($partyId: String!) {
-    searchDialogs(input: { party: [$partyId
-      ]
-    }) {
+    searchDialogs(input: { party: [$partyId] }) {
       items {
         id
         org
@@ -47,6 +45,7 @@ body:graphql {
       }
     }
   }
+  
 }
 
 body:graphql:vars {

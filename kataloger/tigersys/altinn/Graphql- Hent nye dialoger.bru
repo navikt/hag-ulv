@@ -1,5 +1,5 @@
 meta {
-  name: Graphql: Hent nye dialoger
+  name: graphql: hent nye dialoger
   type: graphql
   seq: 10
 }
@@ -18,12 +18,18 @@ body:graphql {
         updatedAt
         status
         content {
-          title { value { value } }
+          title {
+            value {
+              value
+            }
+          }
         }
       }
       hasNextPage
       continuationToken
-      errors { message }
+      errors {
+        message
+      }
     }
   }
   
