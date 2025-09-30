@@ -1,7 +1,7 @@
 meta {
   name: forespør inntektsmelding
   type: http
-  seq: 6
+  seq: 4
 }
 
 patch {
@@ -10,46 +10,20 @@ patch {
   auth: none
 }
 
-headers {
-  Content-Type: application/json-patch+json
-}
-
 body:json {
   [
-    {
-      "op": "add",
-      "path": "/status",
-      "value": "RequiresAttention"
-    },
-    {
-      "op": "add",
-      "path": "/guiActions",
-      "value": [
-        {
-          "action": "read",
-          "url": "https://arbeidsgiver.intern.dev.nav.no/im-dialog/8e1ac9cc-34d4-4342-b865-3fb5fe9b154c",
-          "isDeleteDialogAction": false,
-          "priority": "Primary",
-          "title": [
-            {
-              "value": "Gå til inntektsmeldingskjema på nav.no",
-              "languageCode": "nb"
-            }
-          ]
-        }
-      ]
-    },
     {
       "op": "add",
       "path": "/apiActions",
       "value": [
         {
+          "name": "Send inn inntektsmelding",
           "action": "write",
           "endpoints": [
             {
-              "url": "https://sykepenger-im-lps-api.ekstern.dev.nav.no/v1/inntektsmelding",
+              "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding",
               "httpMethod": "POST",
-              "documentationUrl": "https://sykepenger-im-lps-api.ekstern.dev.nav.no/swagger"
+              "documentationUrl": "https://sykepenger-api.ekstern.dev.nav.no/swagger"
             }
           ]
         }
@@ -60,8 +34,9 @@ body:json {
       "path": "/transmissions",
       "value": [
         {
-          "id": "{{inntektsmeldingTransmissionId}}",
+          "id": "{{forespoerselTransmissionId}}",
           "type": "Request",
+          "extendedType": "INNTEKTSMELDING",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -69,22 +44,30 @@ body:json {
             "title": {
               "value": [
                 {
-                  "value": "Nav trenger inntektsmelding",
-                  "languageCode": "nb"
-                }
-              ],
-              "mediaType": "text/plain"
-            },
-            "summary": {
-              "value": [
-                {
-                  "value": "AKROBATISK PUS har søkt om sykepenger for perioden 03.09.2024 - 26.09.2024 og vi trenger inntektsmelding for å behandle søknaden.",
+                  "value": "Forespørsel om inntektsmelding",
                   "languageCode": "nb"
                 }
               ],
               "mediaType": "text/plain"
             }
-          }
+          },
+          "attachments": [
+            {
+              "displayName": [
+                {
+                  "value": "Inntektsmeldingforespoersel.json",
+                  "languageCode": "nb"
+                }
+              ],
+              "urls": [
+                {
+                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/forespoersel/{{eksempelForespoerselId}}",
+                  "mediaType": "application/json",
+                  "consumerType": "Api"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -103,5 +86,5 @@ script:pre-request {
     });
   }
   
-  bru.setVar('inntektsmeldingTransmissionId', v7());
+  bru.setVar('forespoerselTransmissionId', v7());
 }

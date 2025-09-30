@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "dialogporten som systemeier",
+  "name": "dialogporten",
   "type": "collection",
   "ignore": [
     "node_modules",

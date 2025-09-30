@@ -1,21 +1,13 @@
 meta {
   name: hent dialog
   type: http
-  seq: 2
+  seq: 9
 }
 
 get {
   url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{dialogId}}
   body: none
   auth: none
-}
-
-headers {
-  accept: application/json
-}
-
-vars:pre-request {
-  eksempelDialogId: 0196a091-2397-701d-a653-01cf1e9e70c0
 }
 
 script:pre-request {
