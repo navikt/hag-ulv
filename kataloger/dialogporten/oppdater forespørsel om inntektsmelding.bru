@@ -60,7 +60,7 @@ body:json {
 }
 
 script:pre-request {
-  const v7 = () => {
+  const uuidV7 = () => {
     return 'tttttttt-tttt-7xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.trunc(Math.random() * 16);
       const v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -70,8 +70,10 @@ script:pre-request {
       return unixtimestamp.slice(0, 8) + '-' + unixtimestamp.slice(8);
     });
   }
-
-  bru.setVar('oppdatertForespoerselTransmissionId', v7());
+  
+  // Generer og sett transmission-id for forespørseltransmission, slik at vi senere kan opprette transmissions som refererer til denne.
+  // Transmission-ider må være av typen UUID versjon 7
+  bru.setVar('oppdatertForespoerselTransmissionId', uuidV7());
 }
 
 tests {
