@@ -20,7 +20,7 @@ body:json {
       "title": {
         "value": [
           {
-            "value": "Sykepenger for {{sykmeldtNavn}} (f. 054494)",
+            "value": "Sykepenger for {{sykmeldt}}",
             "languageCode": "nb"
           }
         ],
@@ -40,6 +40,7 @@ body:json {
       {
         "type": "Information",
         "extendedType": "SYKMELDING",
+        "externalReference": "{{eksempelSykmeldingId}}",
         "sender": {
           "actorType": "ServiceOwner"
         },
@@ -79,4 +80,11 @@ body:json {
 script:post-response {
   let dialogId = res.getBody().split("\"").join("")
   bru.setVar("dialogId", dialogId);
+}
+
+tests {
+  test("res.status should be 201", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(201);
+  });
 }

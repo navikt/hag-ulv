@@ -16,3 +16,10 @@ script:pre-request {
     bru.setVar('dialogId', eksempelDialogId);
   }
 }
+
+tests {
+  test("res.status should be 200", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(200);
+  });
+}

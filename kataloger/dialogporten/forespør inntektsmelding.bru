@@ -37,6 +37,7 @@ body:json {
           "id": "{{forespoerselTransmissionId}}",
           "type": "Request",
           "extendedType": "INNTEKTSMELDING",
+          "externalReference": "{{eksempelForespoerselId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -75,7 +76,7 @@ body:json {
 }
 
 script:pre-request {
-  const v7 = () => {
+  const uuidV7 = () => {
     return 'tttttttt-tttt-7xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.trunc(Math.random() * 16);
       const v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -86,5 +87,14 @@ script:pre-request {
     });
   }
   
-  bru.setVar('forespoerselTransmissionId', v7());
+  // Generer og sett transmission-id for forespørseltransmission, slik at vi senere kan opprette transmissions som refererer til denne.
+  // Transmission-ider må være av typen UUID versjon 7
+  bru.setVar('forespoerselTransmissionId', uuidV7());
+}
+
+tests {
+  test("res.status should be 204", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(204);
+  });
 }

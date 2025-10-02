@@ -19,6 +19,7 @@ body:json {
         {
           "type": "Information",
           "extendedType": "SYKEPENGESOEKNAD",
+          "externalReference": "{{eksempelSoeknadId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -54,4 +55,11 @@ body:json {
       ]
     }
   ]
+}
+
+tests {
+  test("res.status should be 204", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(204);
+  });
 }

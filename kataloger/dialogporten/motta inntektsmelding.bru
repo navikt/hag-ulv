@@ -1,5 +1,5 @@
 meta {
-  name: mottatt inntektsmelding
+  name: motta inntektsmelding
   type: http
   seq: 6
 }
@@ -20,6 +20,7 @@ body:json {
           "relatedTransmissionId": "{{forespoerselTransmissionId}}",
           "type": "Submission",
           "extendedType": "INNTEKTSMELDING",
+          "externalReference": "{{eksempelInntektsmeldingId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -55,4 +56,11 @@ body:json {
       ]
     }
   ]
+}
+
+tests {
+  test("res.status should be 204", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(204);
+  });
 }

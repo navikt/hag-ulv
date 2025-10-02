@@ -20,6 +20,7 @@ body:json {
           "relatedTransmissionId": "{{forespoerselTransmissionId}}",
           "type": "Acceptance",
           "extendedType": "INNTEKTSMELDING",
+          "externalReference": "{{eksempelInntektsmeldingId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -55,4 +56,11 @@ body:json {
       ]
     }
   ]
+}
+
+tests {
+  test("res.status should be 204", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(204);
+  });
 }
