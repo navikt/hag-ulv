@@ -1,6 +1,22 @@
+vars:pre-request {
+  kunForApi: true
+  sykmeldt: BRUNO HAGLINGTON (f. 054494)
+  tigersyskundeOrgnrUnderenhet: 315912784
+  eksempelSykmeldingId: 8ac0e0bf-c291-45d7-9c79-00bc4115c53
+  eksempelDialogId: 0199809e-8389-74b6-91eb-a9be38983499
+  eksempelSoeknadId: 01973ed5-1629-7254-af23-543a38ebff6f
+  eksempelForespoerselId: ced958b3-5f31-402b-9922-7319e947d445
+  eksempelForespoerselId2: 646670b2-ef37-4d48-84a2-9b9d61b8dd2a
+  eksempelInntektsmeldingId: 973f27e5-f753-474a-a886-e5271ab41523
+}
+
 script:pre-request {
   const http = require('axios');
   let service = "dialog"
   const response = await http.get('http://localhost:4242/token/' + service)
   req.setHeader('Authorization', "Bearer "+ response.data);
+}
+
+docs {
+  Samling av kall Nav gjør som systemeier mot Dialogporten. Krever at man kjører [HAG ULV](https://github.com/navikt/hag-ulv) lokalt for autorisering. Det anbefales å kjøre alle kallene i serie; høyreklikk på dialogporten-mappen og velg `run`.
 }

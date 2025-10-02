@@ -1,7 +1,7 @@
 meta {
-  name: avvis inntektsmelding
+  name: motta inntektsmelding
   type: http
-  seq: 7
+  seq: 6
 }
 
 patch {
@@ -18,7 +18,7 @@ body:json {
       "value": [
         {
           "relatedTransmissionId": "{{forespoerselTransmissionId}}",
-          "type": "Rejection",
+          "type": "Submission",
           "extendedType": "INNTEKTSMELDING",
           "externalReference": "{{eksempelInntektsmeldingId}}",
           "sender": {
@@ -28,7 +28,7 @@ body:json {
             "title": {
               "value": [
                 {
-                  "value": "Inntektsmelding ikke godkjent",
+                  "value": "Inntektsmelding mottatt",
                   "languageCode": "nb"
                 }
               ],

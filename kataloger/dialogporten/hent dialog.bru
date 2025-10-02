@@ -1,7 +1,7 @@
 meta {
   name: hent dialog
   type: http
-  seq: 2
+  seq: 9
 }
 
 get {
@@ -10,16 +10,16 @@ get {
   auth: none
 }
 
-headers {
-  accept: application/json
-}
-
-vars:pre-request {
-  eksempelDialogId: 0196a091-2397-701d-a653-01cf1e9e70c0
-}
-
 script:pre-request {
-  if (bru.getVar("dialogId") === undefined) {
-    bru.setVar("dialogId", bru.getRequestVar("eksempelDialogId"));
+  if (bru.getVar('dialogId') === undefined) {
+    const eksempelDialogId = bru.getCollectionVar("eksempelDialogId")
+    bru.setVar('dialogId', eksempelDialogId);
   }
+}
+
+tests {
+  test("status code should be 200", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(200);
+  });
 }

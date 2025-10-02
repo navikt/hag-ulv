@@ -1,7 +1,7 @@
 meta {
-  name: forespør inntektsmelding
+  name: oppdater forespørsel om inntektsmelding
   type: http
-  seq: 4
+  seq: 5
 }
 
 patch {
@@ -14,30 +14,14 @@ body:json {
   [
     {
       "op": "add",
-      "path": "/apiActions",
-      "value": [
-        {
-          "name": "Send inn inntektsmelding",
-          "action": "write",
-          "endpoints": [
-            {
-              "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding",
-              "httpMethod": "POST",
-              "documentationUrl": "https://sykepenger-api.ekstern.dev.nav.no/swagger"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "op": "add",
       "path": "/transmissions",
       "value": [
         {
-          "id": "{{forespoerselTransmissionId}}",
+          "id": "{{oppdatertForespoerselTransmissionId}}",
           "type": "Request",
           "extendedType": "INNTEKTSMELDING",
-          "externalReference": "{{eksempelForespoerselId}}",
+          "externalReference": "{{eksempelForespoerselId2}}",
+          "relatedTransmissionId": "{{forespoerselTransmissionId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -62,7 +46,7 @@ body:json {
               ],
               "urls": [
                 {
-                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/forespoersel/{{eksempelForespoerselId}}",
+                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/forespoersel/{{eksempelForespoerselId2}}",
                   "mediaType": "application/json",
                   "consumerType": "Api"
                 }
@@ -86,10 +70,10 @@ script:pre-request {
       return unixtimestamp.slice(0, 8) + '-' + unixtimestamp.slice(8);
     });
   }
-
+  
   // Generer og sett transmission-id for forespørseltransmission, slik at vi senere kan opprette transmissions som refererer til denne.
   // Transmission-ider må være av typen UUID versjon 7
-  bru.setVar('forespoerselTransmissionId', uuidV7());
+  bru.setVar('oppdatertForespoerselTransmissionId', uuidV7());
 }
 
 tests {

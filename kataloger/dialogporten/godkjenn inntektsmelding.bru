@@ -10,23 +10,17 @@ patch {
   auth: none
 }
 
-headers {
-  Content-Type: application/json-patch+json
-}
-
 body:json {
   [
-    {
-      "op": "add",
-      "path": "/status",
-      "value": "InProgress"
-    },
     {
       "op": "add",
       "path": "/transmissions",
       "value": [
         {
+          "relatedTransmissionId": "{{forespoerselTransmissionId}}",
           "type": "Acceptance",
+          "extendedType": "INNTEKTSMELDING",
+          "externalReference": "{{eksempelInntektsmeldingId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -39,19 +33,34 @@ body:json {
                 }
               ],
               "mediaType": "text/plain"
-            },
-            "summary": {
-              "value": [
+            }
+          },
+          "attachments": [
+            {
+              "displayName": [
                 {
-                  "value": "Innsendt inntektsmelding for AKROBATISK PUS for perioden 03.09.2024 - 26.09.2024 er mottatt og godkjent.",
+                  "value": "Inntektsmelding.json",
                   "languageCode": "nb"
                 }
               ],
-              "mediaType": "text/plain"
+              "urls": [
+                {
+                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/{{eksempelInntektsmeldingId}}",
+                  "mediaType": "application/json",
+                  "consumerType": "Api"
+                }
+              ]
             }
-          }
+          ]
         }
       ]
     }
   ]
+}
+
+tests {
+  test("status code should be 204", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(204);
+  });
 }
