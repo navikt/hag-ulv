@@ -86,14 +86,14 @@ script:pre-request {
       return unixtimestamp.slice(0, 8) + '-' + unixtimestamp.slice(8);
     });
   }
-  
+
   // Generer og sett transmission-id for forespørseltransmission, slik at vi senere kan opprette transmissions som refererer til denne.
   // Transmission-ider må være av typen UUID versjon 7
   bru.setVar('forespoerselTransmissionId', uuidV7());
 }
 
 tests {
-  test("res.status should be 204", function() {
+  test("status code should be 204", function() {
     const statusCode = res.getStatus();
     expect(statusCode).to.equal(204);
   });

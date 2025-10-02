@@ -59,7 +59,7 @@ body:json {
 }
 
 tests {
-  test("res.status should be 204", function() {
+  test("status code should be 204", function() {
     const statusCode = res.getStatus();
     expect(statusCode).to.equal(204);
   });

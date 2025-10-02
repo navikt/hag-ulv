@@ -70,12 +70,12 @@ script:pre-request {
       return unixtimestamp.slice(0, 8) + '-' + unixtimestamp.slice(8);
     });
   }
-  
+
   bru.setVar('oppdatertForespoerselTransmissionId', v7());
 }
 
 tests {
-  test("res.status should be 204", function() {
+  test("status code should be 204", function() {
     const statusCode = res.getStatus();
     expect(statusCode).to.equal(204);
   });

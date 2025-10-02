@@ -18,7 +18,7 @@ script:pre-request {
 }
 
 tests {
-  test("res.status should be 200", function() {
+  test("status code should be 200", function() {
     const statusCode = res.getStatus();
     expect(statusCode).to.equal(200);
   });

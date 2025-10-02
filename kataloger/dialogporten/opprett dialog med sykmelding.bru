@@ -83,7 +83,7 @@ script:post-response {
 }
 
 tests {
-  test("res.status should be 201", function() {
+  test("status code should be 201", function() {
     const statusCode = res.getStatus();
     expect(statusCode).to.equal(201);
   });
