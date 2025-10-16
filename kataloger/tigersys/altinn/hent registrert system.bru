@@ -1,0 +1,11 @@
+meta {
+  name: hent registrert system
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/{{systemId}}
+  body: none
+  auth: none
+}

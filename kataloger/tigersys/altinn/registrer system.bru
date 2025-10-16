@@ -12,33 +12,27 @@ post {
 
 body:json {
   {
-    "id": "315339138_tigersys3",
+    "id": "{{systemId}}",
     "vendor": {
-      "id": "0192:315339138"
+      "id": "0192:{{systemLeverandoerOrgnr}}"
     },
     "name": {
-      "en": "Tigersys",
-      "nb": "Tigersys",
-      "nn": "Tigersys"
+      "en": "Tigersys 3",
+      "nb": "Tigersys 3",
+      "nn": "Tigersys 3"
     },
     "description": {
       "en": "Tigersys is good stuff",
       "nb": "Tigersys er bra",
       "nn": "Tigersys er morosamt"
     },
-    "rights": [
+    "accessPackages": [
       {
-        "action": "read",
-        "resource": [
-          {
-            "value": "nav_sykepenger_inntektsmelding-nedlasting",
-            "id": "urn:altinn:resource"
-          }
-        ]
+        "urn": "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori"
       }
     ],
     "allowedRedirectUrls": [ "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen" ],
-    "clientId": [ "" ]
+    "clientId": [ "{{clientId}}" ]
   }
 }
 

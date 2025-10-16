@@ -5,16 +5,16 @@ meta {
 }
 
 put {
-  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/315339138_tigersys3
+  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/{{systemId}}
   body: json
   auth: none
 }
 
 body:json {
   {
-    "id": "315339138_tigersys3",
+    "id": "{{systemId}}",
     "vendor": {
-      "id": "0192:315339138"
+      "id": "0192:{{systemLeverandoerOrgnr}}"
     },
     "name": {
       "en": "Tigersys 3",
@@ -26,46 +26,17 @@ body:json {
       "nb": "Tigersys er bra",
       "nn": "Tigersys er morosamt"
     },
-    "rights": [
+    "accessPackages": [
       {
-        "action": "read",
-        "resource": [
-          {
-            "value": "nav_sykepenger_dialogporten",
-            "id": "urn:altinn:resource"
-          }
-        ]
-      },
-      {
-        "action": "access",
-        "resource": [
-          {
-            "value": "nav_system_sykepenger_inntektsmelding",
-            "id": "urn:altinn:resource"
-          }
-        ]
-      },
-      {
-        "action": "access",
-        "resource": [
-          {
-            "value": "nav_system_sykepenger_sykmelding",
-            "id": "urn:altinn:resource"
-          }
-        ]
-      },
-      {
-        "action": "access",
-        "resource": [
-          {
-            "value": "nav_system_sykepenger_soknad",
-            "id": "urn:altinn:resource"
-          }
-        ]
+        "urn": "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori"
       }
     ],
-    "allowedRedirectUrls": [ "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen" ],
-    "clientId": [ "" ]
+    "allowedRedirectUrls": [
+      "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen"
+    ],
+    "clientId": [
+      "{{clientId}}"
+    ]
   }
 }
 
