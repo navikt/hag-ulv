@@ -1,7 +1,7 @@
 meta {
   name: graphql: hent dialoger for organisasjon
   type: graphql
-  seq: 9
+  seq: 11
 }
 
 post {
@@ -50,7 +50,7 @@ body:graphql {
 
 body:graphql:vars {
   {
-    "partyId": "urn:altinn:organization:identifier-no:315912784"
+    "partyId": "urn:altinn:organization:identifier-no:{{tigersyskundeUnderenhetOrgnr}}"
   }
   
 }
@@ -60,26 +60,13 @@ vars:pre-request {
 }
 
 script:pre-request {
-  const http = require('axios');
-  const responseSystembruker = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
-  )
-  
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  
-  const responseAltinn = await http.get(
-    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }
-  );
-  
-  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+  const http = require("axios");
+  const systembrukerOrgnr = bru.getCollectionVar("tigersyskundeSystembrukerOrgnr")
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/dialogporten/" + systembrukerOrgnr)
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

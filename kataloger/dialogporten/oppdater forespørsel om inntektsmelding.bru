@@ -61,7 +61,7 @@ body:json {
 
 script:pre-request {
   const uuidV7 = () => {
-    return 'tttttttt-tttt-7xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return "tttttttt-tttt-7xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
       const r = Math.trunc(Math.random() * 16);
       const v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
@@ -73,7 +73,7 @@ script:pre-request {
   
   // Generer og sett transmission-id for forespørseltransmission, slik at vi senere kan opprette transmissions som refererer til denne.
   // Transmission-ider må være av typen UUID versjon 7
-  bru.setVar('oppdatertForespoerselTransmissionId', uuidV7());
+  bru.setVar("oppdatertForespoerselTransmissionId", uuidV7());
 }
 
 tests {

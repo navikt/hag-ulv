@@ -34,14 +34,18 @@ body:json {
     "allowedRedirectUrls": [
       "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen"
     ],
-    "clientId": [
-      "{{clientId}}"
-    ]
+    "clientId": ["{{clientId}}"]
   }
 }
 
-vars:pre-request {
-  scopes: altinn:authentication/systemregister.write
+script:pre-request {
+  if (!bru.hasVar("clientId")){
+    throw new Error("For å gjøre dette kallet må du sette variabelen clientId i requesten først. clientId settes i post-request scriptet til GET hent registrert system (eller manuelt i requesten).");
+  }
+
+  const http = require("axios");
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systemregister")
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
 
 docs {

@@ -1,46 +1,23 @@
 meta {
   name: hent dialoger med tidsfilter
   type: http
-  seq: 8
+  seq: 10
 }
 
 get {
-  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs?party=urn:altinn:organization:identifier-no:315912784&updatedAfter=2025-06-20T05:02:41Z
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs?party=urn:altinn:organization:identifier-no:{{tigersyskundeSystembrukerOrgnr}}&updatedAfter=2025-06-20T05:02:41Z
   body: none
   auth: none
 }
 
 params:query {
-  party: urn:altinn:organization:identifier-no:315912784
+  party: urn:altinn:organization:identifier-no:{{tigersyskundeSystembrukerOrgnr}}
   updatedAfter: 2025-06-20T05:02:41Z
-  ~serviceResource: nav_sykepenger_dialogporten
-}
-
-headers {
-  Accept: application/json
-}
-
-vars:pre-request {
-  scopes: digdir:dialogporten
 }
 
 script:pre-request {
-  const http = require('axios');
-  const responseSystembruker = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
-  )
-  
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  
-  const responseAltinn = await http.get(
-    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }
-  );
-  
-  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+  const http = require("axios");
+  const systembrukerOrgnr = bru.getCollectionVar("tigersyskundeSystembrukerOrgnr")
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/dialogporten/" + systembrukerOrgnr)
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }

@@ -1,7 +1,7 @@
 meta {
   name: hent inntektsmelding
   type: http
-  seq: 7
+  seq: 8
 }
 
 get {
@@ -11,15 +11,5 @@ get {
 }
 
 vars:pre-request {
-  id: 973f27e5-f753-474a-a886-e5271ab41523
-}
-
-script:pre-request {
-  const http = require('axios');
-  const response = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet")
-  )
-
-  req.setHeader('Authorization', "Bearer "+ response.data.tokenResponse.access_token);
+  id: 742d3cb3-0066-4edc-913d-7fa2a0411422
 }

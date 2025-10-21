@@ -9,3 +9,15 @@ get {
   body: none
   auth: none
 }
+
+script:pre-request {
+  const http = require("axios");
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systemregister")
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
+}
+
+script:post-response {
+  const responseBody = res.getBody()
+  const clientId = responseBody.clientId[0]
+  bru.setVar("clientId", clientId);
+}
