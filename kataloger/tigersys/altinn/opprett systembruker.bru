@@ -28,3 +28,9 @@ script:pre-request {
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systembruker-forespoersel")
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
+
+docs {
+  Opprett systembrukerforespørsel (forespørselen må godkjennes før selve systembrukeren blir opprettet).
+  
+  Swagger: https://docs.altinn.studio/nb/api/authentication/spec/#/RequestSystemUser
+}

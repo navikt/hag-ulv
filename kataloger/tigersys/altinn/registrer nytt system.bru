@@ -44,8 +44,14 @@ script:pre-request {
   if (!bru.hasVar("clientId")){
     throw new Error("For å gjøre dette kallet må du sette variabelen clientId i requesten først. clientId settes i post-request scriptet til GET hent registrert system (eller manuelt i requesten).");
   }
-
+  
   const http = require("axios");
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systemregister")
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
+}
+
+docs {
+  Registrer nytt system (f.eks. Bjørnesys) i Altinn sitt systemregister. For å oppdatere eksisterende system (f.eks. Tigersys), bruk `PUT oppdater system`.
+  
+  Swagger: https://docs.altinn.studio/nb/api/authentication/spec/#/SystemRegister
 }

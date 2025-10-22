@@ -42,12 +42,14 @@ script:pre-request {
   if (!bru.hasVar("clientId")){
     throw new Error("For å gjøre dette kallet må du sette variabelen clientId i requesten først. clientId settes i post-request scriptet til GET hent registrert system (eller manuelt i requesten).");
   }
-
+  
   const http = require("axios");
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systemregister")
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
 
 docs {
-  For å registrere et nytt system trengs et rent maskinporten-token med scopet altinn:authentication/systemregister.write som man veksler inn til et Altinn-token.
+  Oppdater system (f.eks. Tigersys) i Altinn sitt systemregister.
+  
+  Swagger: https://docs.altinn.studio/nb/api/authentication/spec/#/SystemRegister
 }

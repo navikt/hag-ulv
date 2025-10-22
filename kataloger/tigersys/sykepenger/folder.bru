@@ -13,3 +13,9 @@ script:pre-request {
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systembruker/" + systembrukerOrgnr)
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
+
+docs {
+  Hent sykmelding, sykepengesøknad, inntektsmeldingforespørsel og inntektsmelding. Send inn inntektsmelding.
+  
+  Swagger: https://sykepenger-api.ekstern.dev.nav.no/swagger
+}

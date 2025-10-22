@@ -21,3 +21,9 @@ script:pre-request {
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/dialogporten/" + systembrukerOrgnr)
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
+
+docs {
+  Hent dialoger fra Dialogporten.
+  
+  Swagger: https://platform.tt02.altinn.no/dialogporten/swagger/index.html#/Enduser
+}

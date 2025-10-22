@@ -24,3 +24,9 @@ script:pre-request {
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/subscribe/" + systembrukerOrgnr)
   req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
 }
+
+docs {
+  Opprett et abonnement på Altinn-events.
+  
+  Swagger: https://docs.altinn.studio/nb/events/api/openapi/#/Subscription
+}
