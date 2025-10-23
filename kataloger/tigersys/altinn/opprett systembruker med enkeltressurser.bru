@@ -14,9 +14,42 @@ body:json {
   {
     "systemId": "{{systemId}}",
     "partyOrgNo": "{{tigersyskundeSystembrukerOrgnr}}",
-    "accessPackages": [
+    "rights": [
       {
-        "urn": "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori"
+        "action": "read",
+        "resource": [
+          {
+            "value": "nav_sykepenger_dialog",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_inntektsmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_sykmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_soeknad",
+            "id": "urn:altinn:resource"
+          }
+        ]
       }
     ],
     "redirectUrl": "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen"
