@@ -1,7 +1,7 @@
 meta {
-  name: opprett systembruker med tilgangspakke
+  name: opprett systembruker
   type: http
-  seq: 4
+  seq: 5
 }
 
 post {
@@ -14,6 +14,44 @@ body:json {
   {
     "systemId": "{{systemId}}",
     "partyOrgNo": "{{tigersyskundeSystembrukerOrgnr}}",
+    "rights": [
+      {
+        "action": "read",
+        "resource": [
+          {
+            "value": "nav_sykepenger_dialog",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_inntektsmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_sykmelding",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
+      {
+        "action": "access",
+        "resource": [
+          {
+            "value": "nav_sykepenger_soeknad",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      }
+    ],
     "accessPackages": [
       {
         "urn": "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori"
