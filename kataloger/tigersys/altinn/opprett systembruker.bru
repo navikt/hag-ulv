@@ -1,0 +1,36 @@
+meta {
+  name: opprett systembruker
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://platform.tt02.altinn.no/authentication/api/v1/systemuser/request/vendor
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "systemId": "{{systemId}}",
+    "partyOrgNo": "{{tigersyskundeSystembrukerOrgnr}}",
+    "accessPackages": [
+      {
+        "urn": "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori"
+      }
+    ],
+    "redirectUrl": "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen"
+  }
+}
+
+script:pre-request {
+  const http = require("axios");
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/systembruker-forespoersel")
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
+}
+
+docs {
+  Opprett systembrukerforespørsel (forespørselen må godkjennes før selve systembrukeren blir opprettet).
+  
+  Swagger: https://docs.altinn.studio/nb/api/authentication/spec/#/RequestSystemUser
+}

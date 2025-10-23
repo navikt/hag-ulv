@@ -1,11 +1,11 @@
 meta {
-  name: oppdater system
+  name: registrer nytt system
   type: http
-  seq: 3
+  seq: 2
 }
 
-put {
-  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor/{{systemId}}
+post {
+  url: https://platform.tt02.altinn.no/authentication/api/v1/systemregister/vendor
   body: json
   auth: none
 }
@@ -34,7 +34,9 @@ body:json {
     "allowedRedirectUrls": [
       "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen"
     ],
-    "clientId": ["{{clientId}}"]
+    "clientId": [
+      "{{clientId}}"
+    ]
   }
 }
 
@@ -49,7 +51,7 @@ script:pre-request {
 }
 
 docs {
-  Oppdater system (f.eks. Tigersys) i Altinn sitt systemregister.
+  Registrer nytt system (f.eks. Bjørnesys) i Altinn sitt systemregister. For å oppdatere eksisterende system (f.eks. Tigersys), bruk `PUT oppdater system`.
   
   Swagger: https://docs.altinn.studio/nb/api/authentication/spec/#/SystemRegister
 }

@@ -1,11 +1,11 @@
 meta {
   name: hent dialog
   type: http
-  seq: 7
+  seq: 9
 }
 
 get {
-  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs/01973ed9-0a2c-7319-80b4-78546b1786b6
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/enduser/dialogs/{{dialogId}}
   body: none
   auth: none
 }
@@ -14,32 +14,19 @@ params:query {
   ~serviceResource: nav_sykepenger_dialogporten
 }
 
-headers {
-  Accept: application/json
-}
-
 vars:pre-request {
-  scopes: digdir:dialogporten
-  dialogId: 0196c429-124f-75c5-a7e7-61735a9ca051
+  dialogId: 019a05e5-be2a-7776-a25d-cf414c35517f
 }
 
 script:pre-request {
-  const http = require('axios');
-  const responseSystembruker = await http.post(
-    'https://hag-lps-api-client.ekstern.dev.nav.no/systembruker',
-    'orgnr=' + bru.getCollectionVar("tigersyskundeOrgnrHovedenhet") + '&' + 'scopes=' + bru.getRequestVar("scopes")
-  )
+  const http = require("axios");
+  const systembrukerOrgnr = bru.getCollectionVar("tigersyskundeSystembrukerOrgnr")
+  const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/dialogporten/" + systembrukerOrgnr)
+  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
+}
+
+docs {
+  Hent dialog fra Dialogporten.
   
-  const token = responseSystembruker.data.tokenResponse.access_token;
-  
-  const responseAltinn = await http.get(
-    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }
-  );
-  
-  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
+  Swagger: https://platform.tt02.altinn.no/dialogporten/swagger/index.html#/Enduser
 }
