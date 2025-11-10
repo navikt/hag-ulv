@@ -1,7 +1,7 @@
 meta {
   name: opprett systembruker
   type: http
-  seq: 5
+  seq: 4
 }
 
 post {
@@ -15,6 +15,15 @@ body:json {
     "systemId": "{{systemId}}",
     "partyOrgNo": "{{tigersyskundeSystembrukerOrgnr}}",
     "rights": [
+      {
+        "action": "subscribe",
+        "resource": [
+          {
+            "value": "nav_sykepenger_dialog",
+            "id": "urn:altinn:resource"
+          }
+        ]
+      },
       {
         "action": "read",
         "resource": [

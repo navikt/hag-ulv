@@ -1,13 +1,22 @@
 meta {
-  name: slett abonnement
+  name: hent eventer
   type: http
-  seq: 8
+  seq: 9
 }
 
-delete {
-  url: https://platform.tt02.altinn.no/events/api/v1/subscriptions/89145
+get {
+  url: https://platform.tt02.altinn.no/events/api/v1/events?after=0&resource=urn:altinn:resource:nav_sykepenger_dialog
   body: none
   auth: none
+}
+
+params:query {
+  after: 0
+  resource: urn:altinn:resource:nav_sykepenger_dialog
+}
+
+headers {
+  Authorization: Bearer { Sett inn Altinn token}
 }
 
 script:pre-request {
@@ -22,8 +31,7 @@ script:pre-request {
   req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
 }
 
-docs {
-  Slett et abonnement på Altinn-events.
-  
-  Swagger: https://docs.altinn.studio/nb/events/api/openapi/#/Subscription
+settings {
+  encodeUrl: false
+  timeout: 0
 }

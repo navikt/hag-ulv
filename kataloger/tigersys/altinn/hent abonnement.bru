@@ -1,24 +1,29 @@
 meta {
   name: hent abonnement
   type: http
-  seq: 8
+  seq: 7
 }
 
 get {
-  url: https://platform.tt02.altinn.no/events/api/v1/subscriptions/{{subscriptionId}}
+  url: https://platform.tt02.altinn.no/events/api/v1/subscriptions
   body: none
   auth: none
 }
 
 vars:pre-request {
-  subscriptionId: 64314
+  subscriptionId: 89145
 }
 
 script:pre-request {
   const http = require("axios");
   const systembrukerOrgnr = bru.getCollectionVar("tigersyskundeSystembrukerOrgnr")
   const tokenrespons = await http.get("https://hag-token.intern.dev.nav.no/subscribe/" + systembrukerOrgnr)
-  req.setHeader("Authorization", "Bearer "+ tokenrespons.data);
+  const maskinportenToken = tokenrespons.data;
+  const responseAltinn = await http.get(
+    'https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten',
+    {headers: {'Authorization': `Bearer ${maskinportenToken}`}}
+  );
+  req.setHeader('Authorization', "Bearer "+ responseAltinn.data);
 }
 
 docs {
