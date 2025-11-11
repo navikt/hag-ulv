@@ -15,10 +15,6 @@ params:query {
   resource: urn:altinn:resource:nav_sykepenger_dialog
 }
 
-headers {
-  Authorization: Bearer { Sett inn Altinn token}
-}
-
 script:pre-request {
   const http = require("axios");
   const systembrukerOrgnr = bru.getCollectionVar("tigersyskundeSystembrukerOrgnr")
