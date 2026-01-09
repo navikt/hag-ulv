@@ -1,0 +1,76 @@
+meta {
+  name: hent sykmelding PDF
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://helsearbeidsgiver-pdfgen.intern.dev.nav.no/api/v1/genpdf/sykmelding/sykmelding
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "loepenr": 23242,
+    "sykmeldingId": "c8cdcb93-75d3-4461-b09e-454a1ccd55a2",
+    "mottattAvNav": "2025-05-30T08:52:57.996957",
+    "sykmeldt": {
+      "fnr": "01417306761",
+      "navn": "Ola Nordmann"
+    },
+    "egenmeldingsdager": [],
+    "sykefravaerFom": "2025-05-23",
+    "sykmeldingPerioder": [
+      {
+        "fom": "2025-05-23",
+        "tom": "2025-05-29",
+        "aktivitet": {
+          "avventendeSykmelding": null,
+          "gradertSykmelding": null,
+          "aktivitetIkkeMulig": {
+            "manglendeTilretteleggingPaaArbeidsplassen": false,
+            "beskrivelse": "andre årsaker til sykefravær"
+          },
+          "antallBehandlingsdagerUke": null,
+          "harReisetilskudd": false
+        }
+      },
+      {
+        "fom": "2025-05-23",
+        "tom": "2025-05-29",
+        "aktivitet": {
+          "avventendeSykmelding": null,
+          "gradertSykmelding": null,
+          "aktivitetIkkeMulig": {
+            "manglendeTilretteleggingPaaArbeidsplassen": false,
+            "beskrivelse": "andre årsaker til sykefravær"
+          },
+          "antallBehandlingsdagerUke": null,
+          "harReisetilskudd": false
+        }
+      }
+    ],
+    "oppfoelging": {
+      "prognose": {
+        "erArbeidsfoerEtterEndtPeriode": true,
+        "beskrivHensynArbeidsplassen": "Må ta det pent"
+      },
+      "meldingTilArbeidsgiver": "1234 1234",
+      "tiltakArbeidsplassen": null
+    },
+    "kontaktMedPasient": "2025-05-23T00:00:00",
+    "behandler": {
+      "navn": "TRIVIELL MÅPENDE FLOSKEL",
+      "tlf": "90909090"
+    },
+    "arbeidsgiver": {
+      "navn": "Eksempel Arbeidsgiversen AS",
+      "orgnr": "311910663"
+    }
+  }
+}
+
+vars:pre-request {
+  id: c8cdcb93-75d3-4461-b09e-454a1ccd55a2
+}
