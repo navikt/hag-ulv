@@ -1,0 +1,21 @@
+meta {
+  name: hent sykmeldinger orgledd
+  type: http
+  seq: 11
+}
+
+post {
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/sykmeldinger
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "orgnr": "{{tigersyskuneKommuneUnderenhetOrgnr}}",
+    "fnr": null,
+    "tom": null,
+    "fom": null,
+    "fraLoepenr": null
+  }
+}

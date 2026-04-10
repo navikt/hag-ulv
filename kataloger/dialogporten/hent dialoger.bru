@@ -1,0 +1,25 @@
+meta {
+  name: hent dialoger
+  type: http
+  seq: 10
+}
+
+get {
+  url: https://platform.tt02.altinn.no/dialogporten/api/v1/serviceowner/dialogs/{{dialogId}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (!bru.hasVar("dialogId")) {
+    const eksempelDialogId = bru.getCollectionVar("eksempelDialogId")
+    bru.setVar('dialogId', eksempelDialogId);
+  }
+}
+
+tests {
+  test("status code should be 200", function() {
+    const statusCode = res.getStatus();
+    expect(statusCode).to.equal(200);
+  });
+}
