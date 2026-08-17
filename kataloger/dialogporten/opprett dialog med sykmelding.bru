@@ -16,6 +16,11 @@ body:json {
     "party": "urn:altinn:organization:identifier-no:{{tigersyskundeOrgnrUnderenhet}}",
     "externalReference": "{{eksempelSykmeldingId}}",
     "isApiOnly": {{kunForApi}},
+    "searchTags": [
+      {
+        "value": "050494"
+      }
+    ],
     "content": {
       "title": {
         "value": [
@@ -29,7 +34,7 @@ body:json {
       "summary": {
         "value": [
           {
-            "value": "Sykmeldingsperiode 03.09.2024 - 26.09.2024",
+            "value": "Gjelder sykmeldingsperiode 03.09.2024 – 26.09.2024",
             "languageCode": "nb"
           }
         ],
@@ -59,15 +64,45 @@ body:json {
           {
             "displayName": [
               {
-                "value": "Sykmelding.json",
+                "value": "sykmelding.json",
                 "languageCode": "nb"
               }
             ],
             "urls": [
               {
-                "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/sykmelding/{{eksempelSykmeldingId}}",
+                "url": "{{apiBaseUrl}}/v1/sykmelding/{{eksempelSykmeldingId}}",
                 "mediaType": "application/json",
                 "consumerType": "Api"
+              }
+            ]
+          },
+          {
+            "displayName": [
+              {
+                "value": "sykmelding.pdf",
+                "languageCode": "nb"
+              }
+            ],
+            "urls": [
+              {
+                "url": "{{apiBaseUrl}}/v1/sykmelding/{{eksempelSykmeldingId}}/pdf",
+                "mediaType": "application/pdf",
+                "consumerType": "Api"
+              }
+            ]
+          },
+          {
+            "displayName": [
+              {
+                "value": "sykmelding",
+                "languageCode": "nb"
+              }
+            ],
+            "urls": [
+              {
+                "url": "{{guiBaseUrl}}/dokument/sykmelding/{{eksempelSykmeldingId}}.pdf",
+                "mediaType": "application/pdf",
+                "consumerType": "Gui"
               }
             ]
           }
