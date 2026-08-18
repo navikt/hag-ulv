@@ -1,7 +1,7 @@
 meta {
   name: motta inntektsmelding
   type: http
-  seq: 6
+  seq: 5
 }
 
 patch {
@@ -12,6 +12,34 @@ patch {
 
 body:json {
   [
+    {
+      "op": "add",
+      "path": "/status",
+      "value": "NotApplicable"
+    },
+    {
+      "op": "replace",
+      "path": "/guiActions",
+      "value": [
+        {
+          "name": "Se og endre inntektsmelding",
+          "title": [
+            {
+              "value": "Se og endre inntektsmelding",
+              "languageCode": "nb"
+            }
+          ],
+          "action": "read",
+          "url": "{{guiBaseUrl}}/im-dialog/{{eksempelForespoerselId}}",
+          "priority": "Secondary"
+        }
+      ]
+    },
+      {
+      "op": "replace",
+      "path": "/apiActions",
+      "value": []
+    },
     {
       "op": "add",
       "path": "/transmissions",
@@ -39,15 +67,30 @@ body:json {
             {
               "displayName": [
                 {
-                  "value": "Inntektsmelding.json",
+                  "value": "inntektsmelding.json",
                   "languageCode": "nb"
                 }
               ],
               "urls": [
                 {
-                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding/{{eksempelInntektsmeldingId}}",
+                  "url": "{{apiBaseUrl}}/v1/inntektsmelding/{{eksempelInntektsmeldingId}}",
                   "mediaType": "application/json",
                   "consumerType": "Api"
+                }
+              ]
+            },
+            {
+              "displayName": [
+                {
+                  "value": "Se og endre inntektsmelding",
+                  "languageCode": "nb"
+                }
+              ],
+              "urls": [
+                {
+                  "url": "{{guiBaseUrl}}/im-dialog/{{eksempelForespoerselId}}",
+                  "mediaType": "text/html",
+                  "consumerType": "Gui"
                 }
               ]
             }

@@ -14,6 +14,11 @@ body:json {
   [
     {
       "op": "add",
+      "path": "/status",
+      "value": "RequiresAttention"
+    },
+    {
+      "op": "add",
       "path": "/apiActions",
       "value": [
         {
@@ -21,11 +26,28 @@ body:json {
           "action": "write",
           "endpoints": [
             {
-              "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/inntektsmelding",
+              "url": "{{apiBaseUrl}}/v1/inntektsmelding",
               "httpMethod": "POST",
-              "documentationUrl": "https://sykepenger-api.ekstern.dev.nav.no/swagger"
+              "documentationUrl": "{{apiBaseUrl}}/swagger"
             }
           ]
+        }
+      ]
+    },
+    {
+      "op": "add",
+      "path": "/guiActions",
+      "value": [
+        {
+          "title": [
+            {
+              "value": "Send inn inntektsmelding",
+              "languageCode": "nb"
+            }
+          ],
+          "action": "read",
+          "url": "{{guiBaseUrl}}/im-dialog/{{eksempelForespoerselId}}",
+          "priority": "Primary"
         }
       ]
     },
@@ -56,15 +78,30 @@ body:json {
             {
               "displayName": [
                 {
-                  "value": "Inntektsmeldingforespoersel.json",
+                  "value": "inntektsmeldingforespoersel.json",
                   "languageCode": "nb"
                 }
               ],
               "urls": [
                 {
-                  "url": "https://sykepenger-api.ekstern.dev.nav.no/v1/forespoersel/{{eksempelForespoerselId}}",
+                  "url": "{{apiBaseUrl}}/v1/forespoersel/{{eksempelForespoerselId}}",
                   "mediaType": "application/json",
                   "consumerType": "Api"
+                }
+              ]
+            },
+            {
+              "displayName": [
+                {
+                  "value": "Se forespørsel i Arbeidsgiverportalen",
+                  "languageCode": "nb"
+                }
+              ],
+              "urls": [
+                {
+                  "url": "{{guiBaseUrl}}/im-dialog/{{eksempelForespoerselId}}",
+                  "mediaType": "text/html",
+                  "consumerType": "Gui"
                 }
               ]
             }

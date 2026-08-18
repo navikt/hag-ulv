@@ -1,7 +1,7 @@
 meta {
-  name: oppdater dialog med søknad
+  name: oppdater dialog med refusjonsvedtak
   type: http
-  seq: 3
+  seq: 6
 }
 
 patch {
@@ -18,8 +18,8 @@ body:json {
       "value": [
         {
           "type": "Information",
-          "extendedType": "SYKEPENGESOEKNAD",
-          "externalReference": "{{eksempelSoeknadId}}",
+          "extendedType": "REFUSJONSVEDTAK",
+          "externalReference": "{{eksempelRefusjonsvedtakId}}",
           "sender": {
             "actorType": "ServiceOwner"
           },
@@ -27,7 +27,7 @@ body:json {
             "title": {
               "value": [
                 {
-                  "value": "Søknad om sykepenger",
+                  "value": "Refusjonsvedtak",
                   "languageCode": "nb"
                 }
               ],
@@ -38,13 +38,13 @@ body:json {
             {
               "displayName": [
                 {
-                  "value": "sykepengesoeknad.json",
+                  "value": "refusjonsvedtak.json",
                   "languageCode": "nb"
                 }
               ],
               "urls": [
                 {
-                  "url": "{{apiBaseUrl}}/v1/sykepengesoeknad/{{eksempelSoeknadId}}",
+                  "url": "{{apiBaseUrl}}/v1/refusjonsvedtak/{{eksempelRefusjonsvedtakId}}",
                   "mediaType": "application/json",
                   "consumerType": "Api"
                 }
@@ -53,13 +53,13 @@ body:json {
             {
             "displayName": [
               {
-                "value": "sykepengesoeknad.pdf",
+                "value": "refusjonsvedtak.pdf",
                 "languageCode": "nb"
               }
             ],
             "urls": [
               {
-                "url": "{{apiBaseUrl}}/v1/sykepengesoeknad/{{eksempelSoeknadId}}/pdf",
+                "url": "{{apiBaseUrl}}/v1/refusjonsvedtak/{{eksempelRefusjonsvedtakId}}/pdf",
                 "mediaType": "application/pdf",
                 "consumerType": "Api"
               }
@@ -68,13 +68,13 @@ body:json {
           {
             "displayName": [
               {
-                "value": "sykepengesoeknad",
+                "value": "refusjonsvedtak",
                 "languageCode": "nb"
               }
             ],
             "urls": [
               {
-                "url": "{{guiBaseUrl}}/dokument/sykepengesoeknad/{{eksempelSoeknadId}}.pdf",
+                "url": "{{guiBaseUrl}}/dokument/refusjonsvedtak/{{eksempelRefusjonsvedtakId}}.pdf",
                 "mediaType": "application/pdf",
                 "consumerType": "Gui"
               }
