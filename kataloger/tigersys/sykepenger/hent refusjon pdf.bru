@@ -1,0 +1,15 @@
+meta {
+  name: hent refusjon pdf
+  type: http
+  seq: 12
+}
+
+get {
+  url: https://sykepenger-api.ekstern.dev.nav.no/v1/refusjon/{{id}}/pdf
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  id: c5a72fee-4c92-4050-ba99-6a2dff3bedf6
+}

@@ -1,0 +1,506 @@
+info:
+  name: Send arbeidstaker vedtak
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: https://hag-refusjon.intern.dev.nav.no/arbeidstaker-vedtak
+  body:
+    type: json
+    data: |-
+      {
+        "fom": "2026-09-01",
+        "tom": "2026-09-30",
+        "eventName": "vedtak_fattet",
+        "dokumenter": [
+          {
+            "type": "Sykmelding",
+            "dokumentId": "b99d99eb-569f-4b12-828b-4b08114d4629"
+          },
+          {
+            "type": "Søknad",
+            "dokumentId": "83cc1336-6f51-3116-bdb3-2c053385ad4f"
+          },
+          {
+            "type": "Inntektsmelding",
+            "dokumentId": "cd04aaf6-7692-4816-ae15-eb6b097bea51"
+          }
+        ],
+        "anvendtSeksG": 819294.0,
+        "behandlingId": "324e204b-8961-4610-baa0-523f6b3979ff",
+        "beslutterNavn": null,
+        "beslutterIdent": null,
+        "fødselsnummer": "13498142928",
+        "automatiskFattet": true,
+        "utbetalingsdager": [
+          {
+            "dato": "2026-09-01",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-02",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-03",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-04",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-05",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-06",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-07",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-08",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-09",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-10",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-11",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-12",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-13",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-14",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-15",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-16",
+            "type": "ArbeidsgiverperiodeDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-17",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 3151
+          },
+          {
+            "dato": "2026-09-18",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 3151
+          },
+          {
+            "dato": "2026-09-19",
+            "type": "NavHelgDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-20",
+            "type": "NavHelgDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-21",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 3151
+          },
+          {
+            "dato": "2026-09-22",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 4615,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 3151
+          },
+          {
+            "dato": "2026-09-23",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          },
+          {
+            "dato": "2026-09-24",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          },
+          {
+            "dato": "2026-09-25",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          },
+          {
+            "dato": "2026-09-26",
+            "type": "NavHelgDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-27",
+            "type": "NavHelgDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 0,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 0
+          },
+          {
+            "dato": "2026-09-28",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          },
+          {
+            "dato": "2026-09-29",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          },
+          {
+            "dato": "2026-09-30",
+            "type": "NavDag",
+            "sykdomsgrad": 100,
+            "begrunnelser": [],
+            "dekningsgrad": 100,
+            "beløpTilBruker": 843,
+            "forespurtRefusjon": {
+              "beløp": 2308,
+              "avsender": "ARBEIDSGIVER",
+              "hagInntektsmeldingReferanse": "cd04aaf6-7692-4816-ae15-eb6b097bea51",
+              "sasInntektsmeldingReferanse": "979b6f9e-f36e-4e2b-8063-84eb99c17d4b"
+            },
+            "beløpTilArbeidsgiver": 2308
+          }
+        ],
+        "vedtaksperiodeId": "0b027447-322b-4ae2-913d-75d6598fd89d",
+        "saksbehandlerNavn": null,
+        "sykepengegrunnlag": 819294.0,
+        "saksbehandlerIdent": null,
+        "organisasjonsnummer": "315912784",
+        "skjæringstidspunkt": "2026-09-01",
+        "yrkesaktivitetstype": "ARBEIDSTAKER",
+        "vedtakFattetTidspunkt": "2026-11-03T12:43:05.450000696",
+        "vedtaksUtfallTilArbeidsgiver": "INNVILGELSE",
+        "harArbeidsgiverØnsketRefusjon": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
